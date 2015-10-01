@@ -29,6 +29,7 @@ begin graph
   let d4 = 0               from 0 to 1.5
 
   data "PI_htl, omega.csv" comment # d11 = c1, c2
+  data "PI, omega.csv" comment # d12 = c1, c2
 
   !d1 line             color #EB811B lstyle 1 lwidth 0.1     ! orange
   !d2 marker fcircle   color #0057AE msize 0.2               ! blue
@@ -36,6 +37,7 @@ begin graph
   d4 line             color 0.5 lstyle 8 lwidth 0.06
 
   d11 line             color #EB811B lstyle 1 lwidth 0.07     ! orange
+  d12 marker fcircle   color #0057AE msize 0.2               ! blue
 
   !d15 line color orange lstyle 1 lwidth 0.04
   !d16 line color gray lstyle 4 lwidth 0.1
@@ -74,7 +76,7 @@ begin graph
 
   xaxis min -0.1 max 1.6 dticks 0.5
   xnames ""
-  yaxis min -.2 max 2. dticks .5
+  yaxis min -.2 max 3.7 dticks .5
   !ynames 1 "" "" 10 "" "" 100 
   ytitle "Im(\setfont{psncsi}\Pi_L\setfont{psncsr})\setfont{psncsi} /m_D^2" hei 0.6 font psncsi dist 0.1
 
@@ -85,6 +87,7 @@ begin graph
   let d4 = 0               from 0 to 1.5
 
   data "PI_htl, omega.csv" comment # d11 = c1, c3
+  data "PI, omega.csv" comment # d12 = c1, c3
 
   !d1 line             color #EB811B lstyle 1 lwidth 0.1     ! orange
   !d2 marker fcircle   color #0057AE msize 0.2               ! blue
@@ -92,6 +95,7 @@ begin graph
   d4 line             color 0.5 lstyle 8 lwidth 0.06
 
   d11 line             color #EB811B lstyle 1 lwidth 0.07     ! orange
+  d12 marker fcircle   color #0057AE msize 0.2               ! blue
 
   !d15 line color orange lstyle 1 lwidth 0.04
   !d16 line color gray lstyle 4 lwidth 0.1

@@ -3,9 +3,6 @@
 #include <stdlib.h>
 #include <complex.h>
 
-/* Monte Carlo integration see "integrand.c" */
-extern double lower[2], upper[2];
-
 typedef enum p_type {
   B,  // Boson
   F,  // Fermion
@@ -16,8 +13,8 @@ typedef enum pol {
   L,  // longitudinal
 } pol;
 
-double re_PiL(double *, size_t, void *);
-double im_PiL(double *, size_t, void *);
+double re_PiL(double, void *);
+double im_PiL(double, void *);
 
 /* htl.c */
 double   *Pi_htl(double,pol);  // photon
