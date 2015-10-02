@@ -19,6 +19,7 @@ typedef enum pol {
 //double im_PiT(double, void *);
 
 double *PI_qed(double,double,pol);
+double reL(double,double);
 
 /* htl.c */
 double   *Pi_htl(double,pol);  // photon
