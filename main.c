@@ -1,39 +1,52 @@
 #include "core.h"
-#include <gsl/gsl_integration.h>
+/*#include <gsl/gsl_integration.h>*/
+/*double imL(double o, double q) {*/
 
-size_t calls=1e3; double tol=1e-4;
+  /*gsl_integration_workspace * WS = gsl_integration_workspace_alloc(calls);*/
 
-double reL(double o, double q) {
+  /*double res, err; struct pair Q = {o,q};*/
 
-  gsl_integration_workspace * WS = gsl_integration_workspace_alloc(calls);
+  /*gsl_function  f_aux                     ;*/
+                /*f_aux.function  = &im_PiL ;*/
+                /*f_aux.params    = &Q      ;*/
 
-  double res, err; struct pair Q = {o,q};
+  /*gsl_integration_qags (&f_aux, 0, 1, 0, tol, calls, WS, &res, &err);*/
+  /*gsl_integration_workspace_free (WS);*/
 
-  gsl_function  f_aux                     ;
-                f_aux.function  = &re_PiL ;
-                f_aux.params    = &Q      ;
+  /*return res;*/
+/*}*/
 
-  gsl_integration_qags (&f_aux, 0, 1, 0, tol, calls, WS, &res, &err);
-  gsl_integration_workspace_free (WS);
+/*double reT(double o, double q) {*/
 
-  return res;
-}
+  /*gsl_integration_workspace * WS = gsl_integration_workspace_alloc(calls);*/
 
-double imL(double o, double q) {
+  /*double res, err; struct pair Q = {o,q};*/
 
-  gsl_integration_workspace * WS = gsl_integration_workspace_alloc(calls);
+  /*gsl_function  f_aux                     ;*/
+                /*f_aux.function  = &re_PiT ;*/
+                /*f_aux.params    = &Q      ;*/
 
-  double res, err; struct pair Q = {o,q};
+  /*gsl_integration_qags (&f_aux, 0, 1, 0, tol, calls, WS, &res, &err);*/
+  /*gsl_integration_workspace_free (WS);*/
 
-  gsl_function  f_aux                     ;
-                f_aux.function  = &im_PiL ;
-                f_aux.params    = &Q      ;
+  /*return res;*/
+/*}*/
 
-  gsl_integration_qags (&f_aux, 0, 1, 0, tol, calls, WS, &res, &err);
-  gsl_integration_workspace_free (WS);
+/*double imT(double o, double q) {*/
 
-  return res;
-}
+  /*gsl_integration_workspace * WS = gsl_integration_workspace_alloc(calls);*/
+
+  /*double res, err; struct pair Q = {o,q};*/
+
+  /*gsl_function  f_aux                     ;*/
+                /*f_aux.function  = &im_PiT ;*/
+                /*f_aux.params    = &Q      ;*/
+
+  /*gsl_integration_qags (&f_aux, 0, 1, 0, tol, calls, WS, &res, &err);*/
+  /*gsl_integration_workspace_free (WS);*/
+
+  /*return res;*/
+/*}*/
 
 int main() {
 
@@ -64,10 +77,12 @@ int main() {
     o = 1.5*( (double) i )/( (double) N );
 
     fprintf(f,
-          "%.5f, %.5f, %.5f\n",
+          "%.5f, %.5f, %.5f, %.5f, %.5f\n",
           creal( o ),
-          1.5*reL(o,q),
-          1.5*imL(o,q)
+          1.5*PI_qed(o,q,L)[0],
+          1.5*PI_qed(o,q,L)[1],
+          1.5*PI_qed(o,q,T)[0],
+          1.5*PI_qed(o,q,T)[1]
       );
   }
   fclose(f);
