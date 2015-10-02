@@ -16,8 +16,10 @@ double *help_qed(double q, double o, double k, double r, pol X) {
   double complex ll = clog(k+r+o*(1+I*1e-3)), D;
 
   switch(X) {
-    case L:   D = -.5*r2 + r*(3.*k+o) - (ko2-q2)*(ll) ;          break;
-    case T:   D =   r4/4. - r3*(k+o)/3. + r2*(o2-k2+2.*k*o)/2.
+    case L:
+      D =         -.5*r2 + r*(3.*k+o) - (ko2-q2)*(ll) ;          break;
+    case T:
+      D =         + r4/4. - r3*(k+o)/3. + r2*(o2-k2+2.*k*o)/2.
                   + r*(k*k2 + 4.*k*q2 - k2*o - 3.*k*o2 - o*o2)
                   - (q2-o2)*(ko2+q2)*(ll) ;                      break;
   }
@@ -49,23 +51,30 @@ double *Igd_PI_qed(double xi, void *params) {         // the integrand:
   double rU = q+k, rL = fabs(q-k);
   double complex res;
 
+  double *e_int  = (double*)malloc(2*sizeof(double));
+
   double sr, so;
   for (int j=0; j<4; j++) {     sr = (double) (2*(j%2)-1);  so = (double) (2*(j/2)-1);
+    e_int = help_qed(q,so*o,k,sr*rU,X);
     res +=
-            help_qed(q,so*o,k,sr*rU,X)[0] +   //    \__,{ upper
-          I*help_qed(q,so*o,k,sr*rU,X)[1] -   //    /
-            help_qed(q,so*o,k,sr*rL,X)[0] -   //    \__
-          I*help_qed(q,so*o,k,sr*rL,X)[1] ;   //    /  `{ lower
+            e_int[0] +   //    \__,{ upper
+          I*e_int[1] ;   //    /
+    e_int = help_qed(q,so*o,k,sr*rL,X);
+    res -=
+            e_int[0] +   //    \__
+          I*e_int[1] ;   //    /  `{ lower
   }
+
+  free(e_int);
 
   switch(X) {
     case L:
-    res *=   (-2.*fk/q )
-            *( 1./(4.*M_PI*M_PI) )
+    res *=   (-1.*fk/q )
+            *( 3./(4.*M_PI*M_PI) )
             *( 1./( (1.-xi)*(1.-xi) ) ) ; break;
     case T:
     res *=   (+fk/pow(q,3) )
-            *( 1./(2.*M_PI*M_PI) )
+            *( 3./(4.*M_PI*M_PI) )
             *( 1./( (1.-xi)*(1.-xi) ) ) ; break;
   }
 

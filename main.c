@@ -57,15 +57,20 @@ int main() {
 
   int N = 100;
   double o;
-  double q=1.;
+  double q=1.; 
+  double *piL;
+  double *piT;
   for(int i=0;i<N;i++) {
     o = 1.5*( (double) i )/( (double) N );
+    piL=Pi_htl(o/q,L);
+    piT=Pi_htl(o/q,T);
 
     fprintf(f,
           "%.5f, %.5f, %.5f, %.5f, %.5f\n",
           creal( o ),
-          Pi_htl(o/q,L)[0], Pi_htl(o/q,L)[1], Pi_htl(o/q,T)[0], Pi_htl(o/q,T)[1] 
+          piL[0], piL[1], piT[0], piT[1] 
       );
+    free(piL);free(piT);
   }
   fclose(f);
 
@@ -75,15 +80,15 @@ int main() {
 
   for(int i=0;i<N;i++) {
     o = 1.5*( (double) i )/( (double) N );
+    piL=PI_qed(o,q,L);
+    piT=PI_qed(o,q,T);
 
     fprintf(f,
           "%.5f, %.5f, %.5f, %.5f, %.5f\n",
           creal( o ),
-          1.5*PI_qed(o,q,L)[0],
-          1.5*PI_qed(o,q,L)[1],
-          1.5*PI_qed(o,q,T)[0],
-          1.5*PI_qed(o,q,T)[1]
+          piL[0], piL[1], piT[0], piT[1] 
       );
+    free(piL);free(piT);
   }
   fclose(f);
 
