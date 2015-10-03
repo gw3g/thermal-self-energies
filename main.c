@@ -1,52 +1,4 @@
 #include "core.h"
-/*#include <gsl/gsl_integration.h>*/
-/*double imL(double o, double q) {*/
-
-  /*gsl_integration_workspace * WS = gsl_integration_workspace_alloc(calls);*/
-
-  /*double res, err; struct pair Q = {o,q};*/
-
-  /*gsl_function  f_aux                     ;*/
-                /*f_aux.function  = &im_PiL ;*/
-                /*f_aux.params    = &Q      ;*/
-
-  /*gsl_integration_qags (&f_aux, 0, 1, 0, tol, calls, WS, &res, &err);*/
-  /*gsl_integration_workspace_free (WS);*/
-
-  /*return res;*/
-/*}*/
-
-/*double reT(double o, double q) {*/
-
-  /*gsl_integration_workspace * WS = gsl_integration_workspace_alloc(calls);*/
-
-  /*double res, err; struct pair Q = {o,q};*/
-
-  /*gsl_function  f_aux                     ;*/
-                /*f_aux.function  = &re_PiT ;*/
-                /*f_aux.params    = &Q      ;*/
-
-  /*gsl_integration_qags (&f_aux, 0, 1, 0, tol, calls, WS, &res, &err);*/
-  /*gsl_integration_workspace_free (WS);*/
-
-  /*return res;*/
-/*}*/
-
-/*double imT(double o, double q) {*/
-
-  /*gsl_integration_workspace * WS = gsl_integration_workspace_alloc(calls);*/
-
-  /*double res, err; struct pair Q = {o,q};*/
-
-  /*gsl_function  f_aux                     ;*/
-                /*f_aux.function  = &im_PiT ;*/
-                /*f_aux.params    = &Q      ;*/
-
-  /*gsl_integration_qags (&f_aux, 0, 1, 0, tol, calls, WS, &res, &err);*/
-  /*gsl_integration_workspace_free (WS);*/
-
-  /*return res;*/
-/*}*/
 
 int main() {
 
@@ -57,15 +9,20 @@ int main() {
 
   int N = 100;
   double o;
-  double q=1.;
+  double q=1.; 
+  double *piL;
+  double *piT;
   for(int i=0;i<N;i++) {
-    o = 1.5*( (double) i )/( (double) N );
+    o = 2.*( (double) i )/( (double) N );
+    piL=Pi_htl(o/q,L);
+    piT=Pi_htl(o/q,T);
 
     fprintf(f,
           "%.5f, %.5f, %.5f, %.5f, %.5f\n",
           creal( o ),
-          Pi_htl(o/q,L)[0], Pi_htl(o/q,L)[1], Pi_htl(o/q,T)[0], Pi_htl(o/q,T)[1] 
+          piL[0], piL[1], piT[0], piT[1] 
       );
+    free(piL);free(piT);
   }
   fclose(f);
 
@@ -74,16 +31,17 @@ int main() {
   fprintf(f,"# o/T, Re(Pi_L),  Im(Pi_L),  Re(Pi_T),  Im(Pi_T)\n");
 
   for(int i=0;i<N;i++) {
-    o = 1.5*( (double) i )/( (double) N );
+    o = 2.*( (double) i+1 )/( (double) N );
+    piL=PI_qed(o,q,L);
+    piT=PI_qed(o,q,T);
+    if (fabs(o-q)<1e-2) continue;
 
     fprintf(f,
           "%.5f, %.5f, %.5f, %.5f, %.5f\n",
           creal( o ),
-          1.5*PI_qed(o,q,L)[0],
-          1.5*PI_qed(o,q,L)[1],
-          1.5*PI_qed(o,q,T)[0],
-          1.5*PI_qed(o,q,T)[1]
+          piL[0], piL[1], piT[0], piT[1] 
       );
+    free(piL);free(piT);
   }
   fclose(f);
 
