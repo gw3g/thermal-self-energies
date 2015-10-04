@@ -1,5 +1,8 @@
 #include "core.h"
 
+double tol = 1e-2;
+size_t calls = 1e5;
+
 int main() {
 
   FILE *f;
@@ -34,7 +37,7 @@ int main() {
     o = 2.*( (double) i+1 )/( (double) N );
     piL=PI_qed(o,q,L);
     piT=PI_qed(o,q,T);
-    if (fabs(o-q)<1e-2) continue;
+    if (fabs(o-q)<1e-3) continue;
 
     fprintf(f,
           "%.5f, %.5f, %.5f, %.5f, %.5f\n",
