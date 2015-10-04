@@ -155,5 +155,6 @@ begin graph
 end graph
 
 amove 10 17
-text QED - photon self-energy
+!text QED - photon self-energy
+text QCD - gluon self-energy
 

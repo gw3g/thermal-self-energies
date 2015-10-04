@@ -120,8 +120,8 @@ double *PI_qcd(double o, double q, pol X) {
 
   /*printf("%.5f  \n", Q.o);*/
 
-  double re_PI(double xi, void *params) { return Igd_PI_qcd(xi,params)[0]; }
-  double im_PI(double xi, void *params) { return Igd_PI_qcd(xi,params)[1]; }
+  double re_PI(double xi, void *params) { return Igd_PI_qcd(xi,params)[0]; };
+  double im_PI(double xi, void *params) { return Igd_PI_qcd(xi,params)[1]; };
 
   gsl_function  re_aux; re_aux.function=&re_PI; re_aux.params=&Q;       // nicer to package, re_aux={&...,&...}???
   gsl_function  im_aux; im_aux.function=&im_PI; im_aux.params=&Q;
