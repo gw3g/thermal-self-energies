@@ -1,9 +1,9 @@
 CC	= gcc
-#VPATH	=intgrand:x-sec
+VPATH	=thy
 CFLAGS= -I. -lgsl -lgslcblas -lm
 DEPS	= core.h
 ODIR	= obj
-_OBJ	= main.o htl.o integrand.o
+_OBJ	= main.o htl.o thermal.o QCD_gluon.o QED_photon.o
 OBJ 	= $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(ODIR)/%.o: %.c $(DEPS)
