@@ -14,7 +14,7 @@ double *help_qed(double q, double o, double k, double r, pol X) {
     case T:
       D =         + r4/4. - r3*(k+o)/3. + r2*(o2-k2+2.*k*o)/2.
                   + r*(k*k2 + 4.*k*q2 - k2*o - 3.*k*o2 - o*o2)
-                  - (q2-o2)*(ko2+q2)*(ll) ;                      break;
+                  - (q2-o2)*(ko2+.9*q2)*(ll) ; D /= -q2 ;           break;
   }
 
   double *res     = (double *)malloc( 2*sizeof(double) );
@@ -41,19 +41,19 @@ double *Igd_PI_qed(double xi, void *params) {         // the integrand:
     q2  = q*q,
     fk  = f(k,F);
 
-  double rU = q+k, rL = fabs(q-k);
-  double complex res;
+  double rU = fabs(q+k), rL = fabs(q-k);
+  double complex res = 0.;
 
   double *e_int  = (double*)malloc(2*sizeof(double));
 
   double sr, so;
   for (int j=0; j<4; j++) {     sr = (double) (2*(j%2)-1);  so = (double) (2*(j/2)-1);
     e_int = help_qed(q,so*o,k,sr*rU,X);
-    res +=  1*(
+    res +=  (
             e_int[0] +   //    \__,{ upper
           I*e_int[1] ) ;   //    /
     e_int = help_qed(q,so*o,k,sr*rL,X);
-    res -=  1*(
+    res -=  (
             e_int[0] +   //    \__
           I*e_int[1] ) ;   //    /  `{ lower
   }
@@ -64,8 +64,6 @@ double *Igd_PI_qed(double xi, void *params) {         // the integrand:
           *( 3./(4.*M_PI*M_PI) )
           *( 1./( (1.-xi)*(1.-xi) ) ) 
           ; 
-
-  if (X==T) res /= -q2;
 
   double *Pi  = (double*)malloc(2*sizeof(double));
 

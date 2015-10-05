@@ -29,7 +29,7 @@ begin graph
   let d4 = 0               from 0 to 1.5
 
   data "PI_htl, omega.csv" comment # d11 = c1, c2
-  data "PI, omega.csv" comment # d12 = c1, c2
+  data "qed PI, omega.csv" comment # d12 = c1, c2
 
   !d1 line             color #EB811B lstyle 1 lwidth 0.1     ! orange
   !d2 marker fcircle   color #0057AE msize 0.2               ! blue
@@ -89,7 +89,7 @@ begin graph
   let d4 = 0               from 0 to 1.5
 
   data "PI_htl, omega.csv" comment # d11 = c1, c3
-  data "PI, omega.csv" comment # d12 = c1, c3
+  data "qed PI, omega.csv" comment # d12 = c1, c3
 
   d4 line             color 0.5 lstyle 8 lwidth 0.06
 
@@ -145,7 +145,7 @@ begin graph
   let d4 = 0               from 0 to 1.5
 
   data "PI_htl, omega.csv" comment # d11 = c1, c5
-  data "PI, omega.csv" comment # d12 = c1, c5
+  data "qed PI, omega.csv" comment # d12 = c1, c5
 
   d4 line             color 0.5 lstyle 8 lwidth 0.06
   d12 line            color #0057AE lstyle 1 lwidth 0.12               ! blue

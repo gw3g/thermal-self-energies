@@ -1,7 +1,7 @@
 #include "core.h"
 
 double tol = 1e-2;
-size_t calls = 1e4;
+size_t calls = 1e5;
 
 int main() {
 
@@ -29,14 +29,14 @@ int main() {
   }
   fclose(f);
 
-  f = fopen("out/PI, omega.csv","w+");
-  fprintf(f,"# HTL gluon self-energy\n");
+  f = fopen("out/qed PI, omega.csv","w+");
+  fprintf(f,"# HTL photon self-energy\n");
   fprintf(f,"# o/T, Re(Pi_L),  Im(Pi_L),  Re(Pi_T),  Im(Pi_T)\n");
 
   for(int i=0;i<N;i++) {
     o = 2.*( (double) i+1 )/( (double) N );
-    piL=PI_qcd(o,q,L);
-    piT=PI_qcd(o,q,T);
+    piL=PI_qed(o,q,L);
+    piT=PI_qed(o,q,T);
 
     fprintf(f,
           "%.5f, %.5f, %.5f, %.5f, %.5f\n",
