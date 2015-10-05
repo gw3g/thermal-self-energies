@@ -31,6 +31,8 @@ double *PI_qed(double,double,pol);
 double *PI_qcd(double,double,pol);
 double reL(double,double);
 
+double *frakJ(double,void *,int);
+
 /* htl.c */
 double   *Pi_htl(double,pol);  // photon
 double  *Sig_htl(double,pol);  // quarks

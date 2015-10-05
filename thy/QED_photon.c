@@ -3,7 +3,6 @@
 size_t calls;
 double tol;
 
-
 double *help_qed(double q, double o, double k, double r, pol X) {
   double r2=r*r, r3=r*r2, r4=r*r3, q2=q*q, o2=o*o, k2=k*k, ko2=(2.*k+o)*(2.*k+o);
   double complex ll = clog(k+r+o*(1+I*1e-6)), D;
@@ -46,22 +45,31 @@ double *Igd_PI_qed(double xi, void *params) {         // the integrand:
 
   double *e_int  = (double*)malloc(2*sizeof(double));
 
-  double sr, so;
-  for (int j=0; j<4; j++) {     sr = (double) (2*(j%2)-1);  so = (double) (2*(j/2)-1);
-    e_int = help_qed(q,so*o,k,sr*rU,X);
-    res +=  (
-            e_int[0] +   //    \__,{ upper
-          I*e_int[1] ) ;   //    /
-    e_int = help_qed(q,so*o,k,sr*rL,X);
-    res -=  (
-            e_int[0] +   //    \__
-          I*e_int[1] ) ;   //    /  `{ lower
+  switch(X) {
+    case L:
+              e_int = frakJ(k,Q,0); res += e_int[0] + I*e_int[1];
+              e_int = frakJ(k,Q,1); res += e_int[0] + I*e_int[1];     break;
+    case T:
+              e_int = frakJ(k,Q,0); res += e_int[0] + I*e_int[1];
+              e_int = frakJ(k,Q,1); res += e_int[0] + I*e_int[1];     break;
   }
+
+  /*double sr, so;*/
+  /*for (int j=0; j<4; j++) {     sr = (double) (2*(j%2)-1);  so = (double) (2*(j/2)-1);*/
+    /*e_int = help_qed(q,so*o,k,sr*rU,X);*/
+    /*res +=  (*/
+            /*e_int[0] +   //    \__,{ upper*/
+          /*I*e_int[1] ) ;   //    /*/
+    /*e_int = help_qed(q,so*o,k,sr*rL,X);*/
+    /*res -=  (*/
+            /*e_int[0] +   //    \__*/
+          /*I*e_int[1] ) ;   //    /  `{ lower*/
+  /*}*/
 
   free(e_int);
 
-  res *=   (-fk/q )
-          *( 3./(4.*M_PI*M_PI) )
+  res *=  fk //(-fk/q )
+          *( 12./(4.*M_PI*M_PI) )
           *( 1./( (1.-xi)*(1.-xi) ) ) 
           ; 
 

@@ -116,7 +116,7 @@ begin graph
   let d4 = 0               from 0 to 1.5
 
   data "PI_htl, omega.csv" comment # d11 = c1, c4
-  data "PI, omega.csv" comment # d12 = c1, c4
+  data "qed PI, omega.csv" comment # d12 = c1, c4
 
   d4 line             color 0.5 lstyle 8 lwidth 0.06
   d12 line            color #0057AE lstyle 1 lwidth 0.12               ! blue
