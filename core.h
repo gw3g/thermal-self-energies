@@ -3,6 +3,12 @@
 #include <stdlib.h>
 #include <complex.h>
 
+/*-----------------------------------------------------------------------------------------------*/
+/*                                                                "global" over ALL source files */
+extern size_t calls;
+extern double tol;
+/*-----------------------------------------------------------------------------------------------*/
+
 typedef enum p_type {
   B,  // Boson
   F,  // Fermion
@@ -13,12 +19,16 @@ typedef enum pol {
   L,  // longitudinal
 } pol;
 
+double 
+   f(float e, p_type X),    // f(e)       for X type
+  bf(float e, p_type X);    // \bar{f}(x) for X type
 //double re_PiL(double, void *);
 //double im_PiL(double, void *);
 //double re_PiT(double, void *);
 //double im_PiT(double, void *);
 
 double *PI_qed(double,double,pol);
+double *PI_qcd(double,double,pol);
 double reL(double,double);
 
 /* htl.c */

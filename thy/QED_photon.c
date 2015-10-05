@@ -1,18 +1,12 @@
 #include "core.h"
 #include <gsl/gsl_integration.h>
-size_t calls=1e4; double tol=1e-2;
+size_t calls;
+double tol;
 
-double fBose( float e ) {
-  return 1. / (exp( e ) - 1.);
-};
-
-double fFermi( float e ) {
-  return 1. / (exp( e ) + 1.);
-};
 
 double *help_qed(double q, double o, double k, double r, pol X) {
   double r2=r*r, r3=r*r2, r4=r*r3, q2=q*q, o2=o*o, k2=k*k, ko2=(2.*k+o)*(2.*k+o);
-  double complex ll = clog(k+r+o*(1+I*1e-3)), D;
+  double complex ll = clog(k+r+o*(1+I*1e-6)), D;
 
   switch(X) {
     case L:
@@ -39,15 +33,13 @@ double *Igd_PI_qed(double xi, void *params) {         // the integrand:
   double q = Q->q;
   pol    X = Q->X;
 
-  /*printf("%d\n",X);*/
-
   /* variable changes */
   double
     k   = xi/(1.-xi),
     /*k   = xi,*/
     k2  = k*k,
     q2  = q*q,
-    fk  = fFermi(k);
+    fk  = f(k,F);
 
   double rU = q+k, rL = fabs(q-k);
   double complex res;
@@ -74,17 +66,6 @@ double *Igd_PI_qed(double xi, void *params) {         // the integrand:
           ; 
 
   if (X==T) res /= -q2;
-  /*
-  switch(X) {
-    case L:
-    res *=   (-fk/q )
-            *( 3./(4.*M_PI*M_PI) )
-            *( 1./( (1.-xi)*(1.-xi) ) ) ; break;
-    case T:
-    res *=   (+fk/q )
-            *( 3./(4.*M_PI*M_PI) )
-            *( 1./( (1.-xi)*(1.-xi) ) ) ; break;
-  }*/
 
   double *Pi  = (double*)malloc(2*sizeof(double));
 
@@ -96,7 +77,7 @@ double *Igd_PI_qed(double xi, void *params) {         // the integrand:
 
   return Pi;
 };
-
+/*
 double re_PI(double xi, void *params) { 
   double *res = Igd_PI_qed(xi,params); 
   double a = res[0];
@@ -110,11 +91,10 @@ double im_PI(double xi, void *params) {
   free(res);
   return a;
 };
-
-/*double im_PI(double xi, void *params) { return Igd_PI_qed(xi,params)[1]; }*/
-/*gsl_integration_workspace *WS;*/
+*/
 
 double *PI_qed(double o, double q, pol X) {
+
 
   double                        *Pi  = (double*)malloc(2*sizeof(double));
   gsl_integration_workspace     *WS1 = gsl_integration_workspace_alloc(calls);
@@ -124,10 +104,13 @@ double *PI_qed(double o, double q, pol X) {
 
   /*printf("%.5f  \n", Q.o);*/
 
+  double re_PI(double xi, void *params) { return Igd_PI_qed(xi,params)[0]; }
+  double im_PI(double xi, void *params) { return Igd_PI_qed(xi,params)[1]; }
+
   gsl_function  re_aux; re_aux.function=&re_PI; re_aux.params=&Q;       // nicer to package, re_aux={&...,&...}???
   gsl_function  im_aux; im_aux.function=&im_PI; im_aux.params=&Q;
 
-  double omq = fabs(o-q), opq = fabs(o+q);
+  double omq = fabs(o-q)/2., opq = fabs(o+q)/2.;
   /*printf("%.3f  %.3f \n", omq, opq);*/
   /*printf("%.3f  %.3f \n", omq/(omq+1.), opq/(opq+1.));*/
   double pts[4] = {0., omq/(omq+1.), opq/(opq+1.), 1.};
