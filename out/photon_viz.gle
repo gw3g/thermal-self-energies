@@ -109,7 +109,7 @@ begin graph
 
   xaxis min -0.1 max 2.1 dticks 0.5
   xtitle "\omega/T" hei 0.5 font psncsi dist 0.5
-  yaxis min -.7 max 1.6 dticks 0.5
+  yaxis min -.2 max .7 dticks 0.5
   !ynames 1 "" "" 10 "" "" 100 
   ytitle "Re(\setfont{psncsi}\Pi_T\setfont{psncsr})\setfont{psncsi} /m_D^2" hei 0.6 font psncsi dist 0.1
 
@@ -138,7 +138,7 @@ begin graph
 
   xaxis min -0.1 max 2.1 dticks 0.5
   xnames ""
-  yaxis min -.9 max 1.2 dticks .5
+  yaxis min -.5 max 0.3 dticks .5
   !ynames 1 "" "" 10 "" "" 100 
   ytitle "Im(\setfont{psncsi}\Pi_T\setfont{psncsr})\setfont{psncsi} /m_D^2" hei 0.6 font psncsi dist 0.1
 

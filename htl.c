@@ -14,6 +14,7 @@ double *Pi_htl(double z, pol X) {
     LD  = clog((1.+z)/(1.-z))-I*M_PI, 
     P00 = 1. - 0.5*z*LD,            // Pi_00 =: Pi_L
     Pii = z2 + (1.-z2)*0.5*z*LD;    // Pi_T
+    Pii/= 2.;
 
   double *P = (double *)malloc( 2*sizeof(double) );
 

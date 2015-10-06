@@ -2,7 +2,7 @@
 
 double *fAUX(double r, double k, double o, double q, int i) {
 
-  double complex ll = clog(k+r+o*(1+I*1e-6)),  D;
+  double complex ll = clog(k+r+o*(1.+I*1e-6) ),  D;
   double r2=r*r, r3=r*r2, r4=r*r3, 
          q2=q*q, o2=o*o, 
          k2=k*k, k3=k*k2, ko = k+o;
@@ -50,6 +50,8 @@ double *frakJ (double k, void *params, int i) {
   double *res     = (double*)malloc(2*sizeof(double));    //
 
   double sr, so;
+  double s = 1.;
+
   double rU = fabs(q+k), rL = fabs(q-k);
 
   res[0]  = 0. ; res[1] = 0.;
@@ -61,10 +63,10 @@ double *frakJ (double k, void *params, int i) {
   for (int j=0; j<4; j++) {      sr  = (double) (2*(j%2)-1);  //  -   +   -   +   "sign of r"
                                  so  = (double) (2*(j/2)-1);  //  -   -   +   +   "sign of o"
 
-      r_int = fAUX(   sr*rU,  k,  so*o,   q,  i   );      res[0] += r_int[0]  ;//  \__ upper
-                                                          res[1] += r_int[1]  ;//  /
-      r_int = fAUX(   sr*rL,  k,  so*o,   q,  i   );      res[0] -= r_int[0]  ;//  \__ lower
-                                                          res[1] -= r_int[1]  ;//  /
+      r_int = fAUX(   sr*rU,  k,  so*o,   q,  i   );      res[0] += s*r_int[0]  ;//  \__ upper
+                                                          res[1] += s*r_int[1]  ;//  /
+      r_int = fAUX(   sr*rL,  k,  so*o,   q,  i   );      res[0] -= s*r_int[0]  ;//  \__ lower
+                                                          res[1] -= s*r_int[1]  ;//  /
                                                                                                       };
 
                                                           res[0] *= -.5/q;
