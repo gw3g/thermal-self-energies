@@ -52,7 +52,7 @@ double *frakJ (double k, void *params, int i) {
   double sr, so;
   double rU = fabs(q+k), rL = fabs(q-k);
 
-  res[0]  = 0. ; res[1] = 0. , i;
+  res[0]  = 0. ; res[1] = 0.;
 
   /*
    * carry out the r-integration between (rL, rU).
@@ -61,13 +61,13 @@ double *frakJ (double k, void *params, int i) {
   for (int j=0; j<4; j++) {      sr  = (double) (2*(j%2)-1);  //  -   +   -   +   "sign of r"
                                  so  = (double) (2*(j/2)-1);  //  -   -   +   +   "sign of o"
 
-      r_int = fAUX(   sr*rU,  k,  so*o,   q,  i   );      res[0] +=  r_int[0]  ;//  \__ upper
-                                                          res[1] +=  r_int[1]  ;//  /
-      r_int = fAUX(   sr*rL,  k,  so*o,   q,  i   );      res[0] -=  r_int[0]  ;//  \__ lower
-                                                          res[1] -=  r_int[1]  ;//  /
+      r_int = fAUX(   sr*rU,  k,  so*o,   q,  i   );      res[0] += r_int[0]  ;//  \__ upper
+                                                          res[1] += r_int[1]  ;//  /
+      r_int = fAUX(   sr*rL,  k,  so*o,   q,  i   );      res[0] -= r_int[0]  ;//  \__ lower
+                                                          res[1] -= r_int[1]  ;//  /
                                                                                                       };
 
-  double fk = f(k,X);                                     res[0] *= -.5/q;
+                                                          res[0] *= -.5/q;
                                                           res[1] *= -.5/q;
   free(r_int);
   return res;

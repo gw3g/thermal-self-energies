@@ -34,14 +34,15 @@ int main() {
   fprintf(f,"# o/T, Re(Pi_L),  Im(Pi_L),  Re(Pi_T),  Im(Pi_T)\n");
 
   for(int i=0;i<N;i++) {
-    o = 2.*( (double) i+1 )/( (double) N );
+    o = 1.99*( (double) i+1 )/( (double) N );
+
     piL=PI_qed(o,q,L);
     piT=PI_qed(o,q,T);
 
     fprintf(f,
           "%.5f, %.5f, %.5f, %.5f, %.5f\n",
           creal( o ),
-          piL[0], piL[1], piT[0], piT[1] 
+          piL[0], piL[1], -2.*piT[0], -2.*piT[1] 
       );
     free(piL);free(piT);
   }
