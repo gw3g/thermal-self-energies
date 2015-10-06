@@ -4,25 +4,25 @@ size_t calls;
 double tol;
 
 
-double *help_qcd(double q, double o, double k, double r, pol X) {
-  double r2=r*r, r3=r*r2, r4=r*r3, q2=q*q, o2=o*o, k2=k*k, ko2=(2.*k+o)*(2.*k+o);
-  double complex ll = clog(k+r+o*(1+I*1e-6)), D;
+/*double *help_qcd(double q, double o, double k, double r, pol X) {*/
+  /*double r2=r*r, r3=r*r2, r4=r*r3, q2=q*q, o2=o*o, k2=k*k, ko2=(2.*k+o)*(2.*k+o);*/
+  /*double complex ll = clog(k+r+o*(1+I*1e-6)), D;*/
 
-  switch(X) {
-    case L:
-      D =         -.5*r2 + r*(3.*k+o) - (ko2-2.*q2)*(ll) ;          break;
-    case T:
-      D =         + r4/4. - r3*(k+o)/3. + r2*(o2-k2+2.*k*o)/2.
-                  + r*(k*k2 + 4.*k*q2 - k2*o - 3.*k*o2 - o*o2)
-                  - (q2-o2)*(ko2+2.*q2)*(ll) ;                      break;
-  }
+  /*switch(X) {*/
+    /*case L:*/
+      /*D =         -.5*r2 + r*(3.*k+o) - (ko2-2.*q2)*(ll) ;          break;*/
+    /*case T:*/
+      /*D =         + r4/4. - r3*(k+o)/3. + r2*(o2-k2+2.*k*o)/2.*/
+                  /*+ r*(k*k2 + 4.*k*q2 - k2*o - 3.*k*o2 - o*o2)*/
+                  /*- (q2-o2)*(ko2+2.*q2)*(ll) ; D/= -q2 ;            break;*/
+  /*}*/
 
-  double *res     = (double *)malloc( 2*sizeof(double) );
-          res[0]  = creal(D);
-          res[1]  = cimag(D);
+  /*double *res     = (double *)malloc( 2*sizeof(double) );*/
+          /*res[0]  = creal(D);*/
+          /*res[1]  = cimag(D);*/
 
-  return res;
-}
+  /*return res;*/
+/*}*/
 
 double *Igd_PI_qcd(double xi, void *params) {         // the integrand:
 
@@ -38,48 +38,32 @@ double *Igd_PI_qcd(double xi, void *params) {         // the integrand:
   /* variable changes */
   double
     k   = xi/(1.-xi),
-    /*k   = xi,*/
-    k2  = k*k,
     q2  = q*q,
-    /*fk  = fFermi(k);*/
-    fk  = f(sqrt( k2 + 0.01),B);
+    o2  = o*o,
+    fk  = f(k,B);
 
-  double rU = q+k, rL = fabs(q-k);
-  double complex res;
+  double complex res = 0.;
 
   double *e_int  = (double*)malloc(2*sizeof(double));
 
-  double sr, so;
-  for (int j=0; j<4; j++) {     sr = (double) (2*(j%2)-1);  so = (double) (2*(j/2)-1);
-    e_int = help_qcd(q,so*o,k,sr*rU,X);
-    res +=  1*(
-            e_int[0] +   //    \__,{ upper
-          I*e_int[1] ) ;   //    /
-    e_int = help_qcd(q,so*o,k,sr*rL,X);
-    res -=  1*(
-            e_int[0] +   //    \__
-          I*e_int[1] ) ;   //    /  `{ lower
+  switch(X) {
+    case L:
+              e_int = frakJ(k,Q,0); res += e_int[0] + I*e_int[1];
+              e_int = frakJ(k,Q,1); res += e_int[0] + I*e_int[1];
+              e_int = frakJ(k,Q,3); res += .5*q2*( e_int[0] + I*e_int[1] );         break;
+    case T:
+              e_int = frakJ(k,Q,0); res += e_int[0] + I*e_int[1];
+              e_int = frakJ(k,Q,2); res -= e_int[0] + I*e_int[1];
+              e_int = frakJ(k,Q,3); res += .5*(o2-q2)*( e_int[0] + I*e_int[1] );     break;
   }
 
   free(e_int);
 
-  res *=   (-fk/q )
-          *( 3./(8.*M_PI*M_PI) )
+  res *=  fk //(-fk/q )
+          *( 12./(8.*M_PI*M_PI) )
           *( 1./( (1.-xi)*(1.-xi) ) ) 
           ; 
 
-  if (X==T) res /= -q2;
-  /*
-  switch(X) {
-    case L:
-    res *=   (-fk/q )
-            *( 3./(4.*M_PI*M_PI) )
-            *( 1./( (1.-xi)*(1.-xi) ) ) ; break;
-    case T:
-    res *=   (+fk/q )
-            *( 3./(4.*M_PI*M_PI) )
-            *( 1./( (1.-xi)*(1.-xi) ) ) ; break;
-  }*/
 
   double *Pi  = (double*)malloc(2*sizeof(double));
 
@@ -120,8 +104,8 @@ double *PI_qcd(double o, double q, pol X) {
 
   /*printf("%.5f  \n", Q.o);*/
 
-  double re_PI(double xi, void *params) { return Igd_PI_qcd(xi,params)[0]; }
-  double im_PI(double xi, void *params) { return Igd_PI_qcd(xi,params)[1]; }
+  double re_PI(double xi, void *params) { return Igd_PI_qcd(xi,params)[0]; };
+  double im_PI(double xi, void *params) { return Igd_PI_qcd(xi,params)[1]; };
 
   gsl_function  re_aux; re_aux.function=&re_PI; re_aux.params=&Q;       // nicer to package, re_aux={&...,&...}???
   gsl_function  im_aux; im_aux.function=&im_PI; im_aux.params=&Q;
@@ -141,7 +125,7 @@ double *PI_qcd(double o, double q, pol X) {
   gsl_integration_workspace_free (WS2);
   /*free(pts);*/
 
-  /*printf("%.3f + i %.3f \n", Pi[0], Pi[1]);*/
+  /*printf("%.3f  ::  %.3f + i %.3f \n", o, Pi[0], Pi[1]);*/
   return Pi;
 }
 
