@@ -84,7 +84,7 @@ void eval_disp(double q_min, double q_max)
   else if (HTL==2) fprintf(file, "# QED photon\n"                                                 );
   else if (HTL==3) fprintf(file, "# QCD gluon\n"                                                  );
 
-  fprintf(file,   "# pile in propagator\n"                                                        );
+  fprintf(file,   "# pole in propagator\n"                                                        );
   fprintf(file,   "#\n"                                                                           );
   /*fprintf(file,   "# o/m, q^2_L(o)/m, q^2_T(o)/m\n"                                           );*/
   fprintf(file,   "# q/m, omega_L(q)/m, omega_T(q)/m\n"                                           );
