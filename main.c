@@ -35,7 +35,7 @@ int main() {
   fprintf(f,"# o/T, Re(Pi_L),  Im(Pi_L),  Re(Pi_T),  Im(Pi_T)\n");
 
   for(int i=0;i<N;i++) {
-    o = 1.99*( (double) i+1 )/( (double) N );
+    o = 1.1*( (double) i+1 )/( (double) N );
 
     piL=PI_qcd(o,q,L);
     piT=PI_qcd(o,q,T);
@@ -48,6 +48,23 @@ int main() {
     free(piL);free(piT);
   }
   fclose(f);
+
+  /*omega_g(1.3);*/
+  f = fopen("out/omega(q), gluons.csv","w+");
+  fprintf(f,"# pole in HTL gluon prop.\n");
+  fprintf(f,"# q/m, omega(q)/m\n");
+
+  for(int i=0;i<N;i++) {
+    q = 1.*( (double) i+1 )/( (double) N )+ .01;
+
+    fprintf(f,
+          "%.5f, %.5f, %.5f\n",
+          q,
+          omega_g(q,L) , omega_g(q,T)
+      );
+  }
+  fclose(f);
+
 
   return 0;
 }

@@ -39,6 +39,8 @@ double  *Sig_htl(double,pol);  // quarks
 //double 
   //re_Pi_L( double complex, double complex),
   //im_Pi_L( double complex, double complex);
+/* disp rel */
+double omega_g(double,pol);
 
 /* 4-vector */
 struct pair {double complex o; double complex q;};
