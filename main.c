@@ -1,70 +1,108 @@
+/*
+ * Author: greg jackson
+ * Date: Oct 08 2015
+ * thermal loops
+ *
+ */
+
 #include "core.h"
 
-double tol = 1e-2;
-size_t calls = 1e5;
+/*-----------------------------------------------------------------------------------------------*/
+
+double tol = 1e-1;
+size_t calls = 1e7;
+int             HTL  = 1   ;  // =1 for HTL, =2 for QED, =3 for QCD
+
+void   eval_PI(double,double); void   eval_disp(double,double); int   points;  // See after main() ...
+
+/*-----------------------------------------------------------------------------------------------*/
 
 int main() {
 
-  FILE *f;
-  f = fopen("out/PI_htl, omega.csv","w+");
-  fprintf(f,"# HTL photon self-energy\n");
-  fprintf(f,"# o/T, Re(Pi_L),  Im(Pi_L),  Re(Pi_T),  Im(Pi_T)\n");
+  points = 100;
 
-  int N = 100;
+  HTL = 1;    eval_PI(0.01, 2.);
+  HTL = 2;    eval_PI(0.01, 2.);
+  HTL = 3;    eval_PI(0.01, 2.);
+  /*eval_disp(0.001, 2.);*/
+
+  return 0;
+}
+
+/*-----------------------------------------------------------------------------------------------*/
+
+FILE *file; char fname[40];
+
+void eval_PI(double o_min, double o_max)
+{
+
+       if (HTL==1) sprintf(fname, "out/Pi, htl.csv"                                               );
+  else if (HTL==2) sprintf(fname, "out/Pi, qed.csv"                                               );
+  else if (HTL==3) sprintf(fname, "out/Pi, qcd.csv"                                               );
+
+  file = fopen(fname,"w+");
+
+       if (HTL==1) fprintf(file, "# HTL approx\n"                                                 );
+  else if (HTL==2) fprintf(file, "# QED photon\n"                                                 );
+  else if (HTL==3) fprintf(file, "# QCD gluon\n"                                                  );
+
+  fprintf(file,   "#\n"                                                                           );
+  fprintf(file,   "# o/T, Re(Pi_L),  Im(Pi_L),  Re(Pi_T),  Im(Pi_T)\n"                            );
+
   double o;
   double q=1.; 
-  double *piL;
-  double *piT;
-  for(int i=0;i<N;i++) {
-    o = 2.*( (double) i )/( (double) N );
-    piL=Pi_htl(o/q,L);
-    piT=Pi_htl(o/q,T);
+  double *piL;   double *piT;
 
-    fprintf(f,
+  for(int i=0; i<points; i++) {
+    o = o_min + (o_max-o_min)*( (double) i )/( (double) points );
+
+         if (HTL==1) {    piL=Pi_htl(o/q,L),    piT=Pi_htl(o/q,T);    }
+    else if (HTL==2) {    piL=Pi_qed(o,q,L);    piT=Pi_qed(o,q,T);    }
+    else if (HTL==3) {    piL=Pi_qcd(o,q,L);    piT=Pi_qcd(o,q,T);    }
+
+    fprintf(file,
           "%.5f, %.5f, %.5f, %.5f, %.5f\n",
           creal( o ),
           piL[0], piL[1], piT[0], piT[1] 
       );
     free(piL);free(piT);
   }
-  fclose(f);
-
-  /*f = fopen("out/qed PI, omega.csv","w+");*/
-  f = fopen("out/qcd PI, omega.csv","w+");
-  fprintf(f,"# HTL photon self-energy\n");
-  fprintf(f,"# o/T, Re(Pi_L),  Im(Pi_L),  Re(Pi_T),  Im(Pi_T)\n");
-
-  for(int i=0;i<N;i++) {
-    o = 1.1*( (double) i+1 )/( (double) N );
-
-    piL=PI_qcd(o,q,L);
-    piT=PI_qcd(o,q,T);
-
-    fprintf(f,
-          "%.5f, %.5f, %.5f, %.5f, %.5f\n",
-          creal( o ),
-          piL[0], piL[1], -piT[0], -piT[1] 
-      );
-    free(piL);free(piT);
-  }
-  fclose(f);
-
-  /*omega_g(1.3);*/
-  f = fopen("out/omega(q), gluons.csv","w+");
-  fprintf(f,"# pole in HTL gluon prop.\n");
-  fprintf(f,"# q/m, omega(q)/m\n");
-
-  for(int i=0;i<N;i++) {
-    q = 1.*( (double) i+1 )/( (double) N )+ .01;
-
-    fprintf(f,
-          "%.5f, %.5f, %.5f\n",
-          q,
-          omega_g(q,L) , omega_g(q,T)
-      );
-  }
-  fclose(f);
-
-
-  return 0;
+  fclose(file);
 }
+
+
+void eval_disp(double q_min, double q_max)
+{
+
+       if (HTL==1) sprintf(fname, "out/omega(q), htl.csv"                                         );
+  else if (HTL==2) sprintf(fname, "out/omega(q), qed.csv"                                         );
+  else if (HTL==3) sprintf(fname, "out/omega(q), qcd.csv"                                         );
+
+  file = fopen(fname,"w+");
+
+       if (HTL==1) fprintf(file, "# HTL approx\n"                                                 );
+  else if (HTL==2) fprintf(file, "# QED photon\n"                                                 );
+  else if (HTL==3) fprintf(file, "# QCD gluon\n"                                                  );
+
+  fprintf(file,   "# pile in propagator\n"                                                        );
+  fprintf(file,   "#\n"                                                                           );
+  /*fprintf(file,   "# o/m, q^2_L(o)/m, q^2_T(o)/m\n"                                           );*/
+  fprintf(file,   "# q/m, omega_L(q)/m, omega_T(q)/m\n"                                           );
+
+  double q; 
+
+  for(int i=0; i<points; i++) {
+    q = q_min + (q_max-q_min)*( (double) i )/( (double) points );
+
+         /*if (HTL==1) {    piL=Pi_htl(o/q,L),    piT=Pi_htl(o/q,T);    }*/
+    /*else if (HTL==2) {    piL=Pi_qed(o,q,L);    piT=Pi_qed(o,q,T);    }*/
+    /*else if (HTL==3) {    piL=Pi_qcd(o,q,L);    piT=Pi_qcd(o,q,T);    }*/
+
+    fprintf(file,
+          "%.5f, %.5f, %.5f\n",
+          q, disp_g(q,L), disp_g(q,T)
+      );
+  }
+  fclose(file);
+}
+

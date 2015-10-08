@@ -33,7 +33,7 @@ double *Igd_PI_qed(double xi, void *params) {         // the integrand:
 
   free(e_int);
 
-  res *=  fk //(-fk/q )
+  res *=  -fk //(-fk/q )
           *( 12./(4.*M_PI*M_PI) )
           *( 1./( (1.-xi)*(1.-xi) ) ) 
           ; 
@@ -49,7 +49,7 @@ double *Igd_PI_qed(double xi, void *params) {         // the integrand:
   return Pi;
 };
 
-double *PI_qed(double o, double q, pol X) {
+double *Pi_qed(double o, double q, pol X) {
 
 
   double                        *Pi  = (double*)malloc(2*sizeof(double));

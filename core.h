@@ -27,8 +27,8 @@ double
 //double re_PiT(double, void *);
 //double im_PiT(double, void *);
 
-double *PI_qed(double,double,pol);
-double *PI_qcd(double,double,pol);
+double *Pi_qed(double,double,pol);
+double *Pi_qcd(double,double,pol);
 double reL(double,double);
 
 double *frakJ(double,void *,int);
@@ -40,7 +40,7 @@ double  *Sig_htl(double,pol);  // quarks
   //re_Pi_L( double complex, double complex),
   //im_Pi_L( double complex, double complex);
 /* disp rel */
-double omega_g(double,pol);
+double disp_g(double,pol);
 
 /* 4-vector */
 struct pair {double complex o; double complex q;};

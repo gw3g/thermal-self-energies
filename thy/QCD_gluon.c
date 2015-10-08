@@ -41,7 +41,7 @@ double *Igd_PI_qcd(double xi, void *params) {         // the integrand:
 
   free(e_int);
 
-  res *=  fk //(-fk/q )
+  res *=  -fk //(-fk/q )
           *( 12./(8.*M_PI*M_PI) )
           *( 1./( (1.-xi)*(1.-xi) ) ) 
           ; 
@@ -58,7 +58,7 @@ double *Igd_PI_qcd(double xi, void *params) {         // the integrand:
   return Pi;
 };
 
-double *PI_qcd(double o, double q, pol X) {
+double *Pi_qcd(double o, double q, pol X) {
 
 
   double                        *Pi  = (double*)malloc(2*sizeof(double));
@@ -81,8 +81,8 @@ double *PI_qcd(double o, double q, pol X) {
   double pts[4] = {0., omq/(omq+1.), opq/(opq+1.), 1.};
   /*double                        *pts  = (double*)malloc(4*sizeof(double));*/
   /*pts[0] = 0.; pts[1] = omq/(omq+1.); pts[2] = opq/(opq+1.); pts[3] = 1.;*/
-  gsl_integration_qagp (&re_aux,  pts, 4, 0, tol, calls, WS1, &res, &err);        Pi[0] = res;
-  gsl_integration_qagp (&im_aux,  pts, 4, 0, tol, calls, WS1, &res, &err);        Pi[1] = res;
+  gsl_integration_qagp (&re_aux,  pts, 4, tol, 0, calls, WS1, &res, &err);        Pi[0] = res;
+  gsl_integration_qagp (&im_aux,  pts, 4, tol, 0, calls, WS1, &res, &err);        Pi[1] = res;
   /*WS = gsl_integration_workspace_alloc(calls);*/
   /*gsl_integration_qags (&re_aux,  0, 1, 0, tol, calls, WS1, &res, &err);        Pi[0] = res;*/
   /*gsl_integration_qags (&im_aux,  0, 1, 0, tol, calls, WS2, &res, &err);        Pi[1] = res;*/
@@ -98,22 +98,26 @@ double D_inv(double o, void *params) {
   struct Qpol * Q = (struct Qpol *)params;
   double q = Q->q;
   pol X = Q->X;
+  double o2 = o*o, q2=q*q;
 
   switch (X) {
-    case L:  return (  q*q + Pi_htl(o/q,X)[0]  );
-    case T:  return (  o*o - q*q - Pi_htl(o/q,X)[0]  );
+    case L:  return (  q2 - Pi_htl(o/q,X)[0]  );
+    case T:  return (  o2 - q2 - Pi_htl(o/q,X)[0]  );
   }
 }
 
+const gsl_root_fsolver_type *rst;
+gsl_root_fsolver *rs;
 
-double omega_g(double q, pol X) {
+double disp_g(double q, pol X) {
 
-  int status;
-  int iter = 0, max_iter = 100;
-  const gsl_root_fsolver_type *T;
-  gsl_root_fsolver *s;
-  double r = 0, r_expected = sqrt (5.0);
-  double o_lo = q+1e-6, o_hi = q + 1.;
+  int iter = 0, max_iter = 1000;
+
+  double r = 0;
+
+  double o_lo, o_hi;
+  o_lo = q + 1e-8; o_hi = q+1.2;
+
   gsl_function F;
   /*struct quadratic_params params = {1.0, 0.0, -5.0};*/
   struct Qpol Q = {0., q, X};
@@ -121,38 +125,20 @@ double omega_g(double q, pol X) {
   F.function = &D_inv;
   F.params = &Q;
 
-  T = gsl_root_fsolver_brent;
-  s = gsl_root_fsolver_alloc (T);
-  gsl_root_fsolver_set (s, &F, o_lo, o_hi);
+  rst = gsl_root_fsolver_brent;
+  rs = gsl_root_fsolver_alloc (rst);
+  gsl_root_fsolver_set (rs, &F, o_lo, o_hi);
 
-  printf ("using %s method\n", 
-          gsl_root_fsolver_name (s));
+  do    {
+            iter++;
+            gsl_root_fsolver_iterate (rs);
+            r = gsl_root_fsolver_root (rs);
+            o_lo = gsl_root_fsolver_x_lower (rs);
+            o_hi = gsl_root_fsolver_x_upper (rs);
+        }
+  while ( iter < max_iter);
 
-  printf ("%5s [%9s, %9s] %9s %10s %9s\n",
-          "iter", "lower", "upper", "root", 
-          "err", "err(est)");
-
-  do
-    {
-      iter++;
-      status = gsl_root_fsolver_iterate (s);
-      r = gsl_root_fsolver_root (s);
-      o_lo = gsl_root_fsolver_x_lower (s);
-      o_hi = gsl_root_fsolver_x_upper (s);
-      status = gsl_root_test_interval (o_lo, o_hi,
-                                       0, 0.001);
-
-      if (status == GSL_SUCCESS)
-        printf ("Converged:\n");
-
-      printf ("%5d [%.7f, %.7f] %.7f %+.7f %.7f\n",
-              iter, o_lo, o_hi,
-              r, r - r_expected, 
-              o_hi - o_lo);
-    }
-  while (status == GSL_CONTINUE && iter < max_iter);
-
-  gsl_root_fsolver_free (s);
+  gsl_root_fsolver_free (rs);
 
   return r;
 }
