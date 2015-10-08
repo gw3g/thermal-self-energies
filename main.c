@@ -19,11 +19,11 @@ void   eval_PI(double,double); void   eval_disp(double,double); int   points;  /
 
 int main() {
 
-  points = 100;
+  points = 20;
 
   HTL = 1;    eval_PI(0.01, 2.);    eval_disp(0.001, 1.);
   HTL = 2;    eval_PI(0.01, 2.);    eval_disp(0.001, 1.);
-  HTL = 3;    eval_PI(0.01, 2.);    eval_disp(0.100, 1.);
+  HTL = 3;    eval_PI(0.01, 2.);    eval_disp(0.020, 1.);
   /*eval_disp(0.001, 2.);*/
 
   return 0;

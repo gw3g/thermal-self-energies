@@ -26,12 +26,12 @@ double D_inv(double o, void *params) {
 
 double disp(double q, pol X) {
 
-  int iter = 0, max_iter = 1000;
+  int iter = 0, max_iter = 100;
 
   double r = 0;
 
   double o_lo, o_hi;
-  o_lo = q + 1e-8; o_hi = q+0.8;
+  o_lo = q + 1e-3; o_hi = q+.8;
 
   gsl_function F;
   /*struct quadratic_params params = {1.0, 0.0, -5.0};*/
@@ -50,6 +50,7 @@ double disp(double q, pol X) {
             r = gsl_root_fsolver_root (rs);
             o_lo = gsl_root_fsolver_x_lower (rs);
             o_hi = gsl_root_fsolver_x_upper (rs);
+            /*printf("%d ---q: %.4f, lo: %.4f, hi: %.4f\n", HTL, q, o_lo, o_hi );*/
         }
   while ( iter < max_iter);
 
