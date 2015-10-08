@@ -21,9 +21,9 @@ int main() {
 
   points = 100;
 
-  HTL = 1;    eval_PI(0.01, 2.);
-  HTL = 2;    eval_PI(0.01, 2.);
-  HTL = 3;    eval_PI(0.01, 2.);
+  HTL = 1;    eval_PI(0.01, 2.);    eval_disp(0.001, 1.);
+  HTL = 2;    eval_PI(0.01, 2.);    eval_disp(0.001, 1.);
+  HTL = 3;    eval_PI(0.01, 2.);    eval_disp(0.100, 1.);
   /*eval_disp(0.001, 2.);*/
 
   return 0;
@@ -100,7 +100,7 @@ void eval_disp(double q_min, double q_max)
 
     fprintf(file,
           "%.5f, %.5f, %.5f\n",
-          q, disp_g(q,L), disp_g(q,T)
+          q, disp(q,L), disp(q,T)
       );
   }
   fclose(file);

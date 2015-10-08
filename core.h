@@ -7,6 +7,7 @@
 /*                                                                "global" over ALL source files */
 extern size_t calls;
 extern double tol;
+extern    int HTL;
 /*-----------------------------------------------------------------------------------------------*/
 
 typedef enum p_type {
@@ -29,7 +30,7 @@ double
 
 double *Pi_qed(double,double,pol);
 double *Pi_qcd(double,double,pol);
-double reL(double,double);
+//double reL(double,double);
 
 double *frakJ(double,void *,int);
 
@@ -40,7 +41,7 @@ double  *Sig_htl(double,pol);  // quarks
   //re_Pi_L( double complex, double complex),
   //im_Pi_L( double complex, double complex);
 /* disp rel */
-double disp_g(double,pol);
+double disp(double,pol);
 
 /* 4-vector */
 struct pair {double complex o; double complex q;};
