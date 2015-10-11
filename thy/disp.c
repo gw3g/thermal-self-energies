@@ -5,7 +5,7 @@
 
 const gsl_root_fsolver_type *rst;
 gsl_root_fsolver *rs;
-int HTL;
+int   HTL;
 
 double D_inv(double o, void *params) {
   struct Qpol * Q = (struct Qpol *)params;
@@ -13,7 +13,9 @@ double D_inv(double o, void *params) {
   double q  = Q->q;
   pol X     = Q->X;
 
-  double o2 = o*o, q2=q*q;   double re_Pi;
+  o*=g;q*=g;
+
+  double o2 = o*o, q2 = q*q, g2 = g*g;   double re_Pi;
 
        if (HTL==1) { re_Pi = Pi_htl(o/q,X)[0]; }
   else if (HTL==2) { re_Pi = Pi_qed(o,q,X)[0]; }
@@ -31,7 +33,7 @@ double disp(double q, pol X) {
   double r = 0;
 
   double o_lo, o_hi;
-  o_lo = q + 1e-3; o_hi = q+.8;
+  o_lo = q + 1e-6; o_hi = q+1.;
 
   gsl_function F;
   /*struct quadratic_params params = {1.0, 0.0, -5.0};*/

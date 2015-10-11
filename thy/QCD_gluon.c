@@ -1,10 +1,9 @@
 #include "core.h"
 #include <gsl/gsl_math.h>
-/*#include <gsl/gsl_errno.h>*/
 #include <gsl/gsl_integration.h>
-/*#include <gsl/gsl_roots.h>*/
 size_t calls;
 double tol;
+double g;
 
 double *Igd_PI_qcd(double xi, void *params) {         // the integrand:
 
@@ -44,6 +43,7 @@ double *Igd_PI_qcd(double xi, void *params) {         // the integrand:
   res *=  -fk //(-fk/q )
           *( 12./(8.*M_PI*M_PI) )
           *( 1./( (1.-xi)*(1.-xi) ) ) 
+          *g*g
           ; 
 
 
@@ -53,13 +53,13 @@ double *Igd_PI_qcd(double xi, void *params) {         // the integrand:
   Pi[1] = cimag( res );
 
   /*printf("%.3f + i %.3f \n", Pi[0], Pi[1]);*/
+  /*printf("o:%.3f q:%.3f \n",o,q);*/
   /*printf("%.3f + i %.3f \n", creal(1./(o+k+r)), cimag(1./(o+k-r) - 1./(o-k+r)) );*/
 
   return Pi;
 };
 
 double *Pi_qcd(double o, double q, pol X) {
-
 
   double                        *Pi  = (double*)malloc(2*sizeof(double));
   gsl_integration_workspace     *WS1 = gsl_integration_workspace_alloc(calls);
@@ -93,52 +93,3 @@ double *Pi_qcd(double o, double q, pol X) {
   /*printf("%.3f  ::  %.3f + i %.3f \n", o, Pi[0], Pi[1]);*/
   return Pi;
 }
-
-/*double D_inv(double o, void *params) {*/
-  /*struct Qpol * Q = (struct Qpol *)params;*/
-  /*double q = Q->q;*/
-  /*pol X = Q->X;*/
-  /*double o2 = o*o, q2=q*q;*/
-
-  /*switch (X) {*/
-    /*case L:  return (  q2 - Pi_htl(o/q,X)[0]  );*/
-    /*case T:  return (  o2 - q2 - Pi_htl(o/q,X)[0]  );*/
-  /*}*/
-/*}*/
-
-/*const gsl_root_fsolver_type *rst;*/
-/*gsl_root_fsolver *rs;*/
-
-/*double disp_g(double q, pol X) {*/
-
-  /*int iter = 0, max_iter = 1000;*/
-
-  /*double r = 0;*/
-
-  /*double o_lo, o_hi;*/
-  /*o_lo = q + 1e-8; o_hi = q+1.2;*/
-
-  /*gsl_function F;*/
-  /*[>struct quadratic_params params = {1.0, 0.0, -5.0};<]*/
-  /*struct Qpol Q = {0., q, X};*/
-
-  /*F.function = &D_inv;*/
-  /*F.params = &Q;*/
-
-  /*rst = gsl_root_fsolver_brent;*/
-  /*rs = gsl_root_fsolver_alloc (rst);*/
-  /*gsl_root_fsolver_set (rs, &F, o_lo, o_hi);*/
-
-  /*do    {*/
-            /*iter++;*/
-            /*gsl_root_fsolver_iterate (rs);*/
-            /*r = gsl_root_fsolver_root (rs);*/
-            /*o_lo = gsl_root_fsolver_x_lower (rs);*/
-            /*o_hi = gsl_root_fsolver_x_upper (rs);*/
-        /*}*/
-  /*while ( iter < max_iter);*/
-
-  /*gsl_root_fsolver_free (rs);*/
-
-  /*return r;*/
-/*}*/

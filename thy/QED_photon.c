@@ -2,6 +2,7 @@
 #include <gsl/gsl_integration.h>
 size_t calls;
 double tol;
+double g;
 
 double *Igd_PI_qed(double xi, void *params) {         // the integrand:
 
@@ -36,6 +37,7 @@ double *Igd_PI_qed(double xi, void *params) {         // the integrand:
   res *=  -fk //(-fk/q )
           *( 12./(4.*M_PI*M_PI) )
           *( 1./( (1.-xi)*(1.-xi) ) ) 
+          *g*g
           ; 
 
   double *Pi  = (double*)malloc(2*sizeof(double));
@@ -44,6 +46,7 @@ double *Igd_PI_qed(double xi, void *params) {         // the integrand:
   Pi[1] = cimag( res );
 
   /*printf("%.3f + i %.3f \n", Pi[0], Pi[1]);*/
+  /*printf("o: %.3f     q: %.3f \n", o, q);*/
   /*printf("%.3f + i %.3f \n", creal(1./(o+k+r)), cimag(1./(o+k-r) - 1./(o-k+r)) );*/
 
   return Pi;

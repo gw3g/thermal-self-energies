@@ -6,8 +6,9 @@
 /*-----------------------------------------------------------------------------------------------*/
 /*                                                                "global" over ALL source files */
 extern size_t calls;
-extern double tol;
-extern    int HTL;
+extern double   tol;
+extern double     g;
+extern    int   HTL;
 /*-----------------------------------------------------------------------------------------------*/
 
 typedef enum p_type {

@@ -8,7 +8,7 @@
  */
 double *Pi_htl(double z, pol X) {
   /*  z := omega/q  */
-  double z2=z*z;
+  double z2=z*z, g2=g*g;
 
   double complex 
     LD  = clog((1.+z)/(1.-z))-I*M_PI, 
@@ -20,11 +20,11 @@ double *Pi_htl(double z, pol X) {
 
   switch(X) {
     case T:                         // transverse = spatial
-      P[0]  = creal( Pii );
-      P[1]  = cimag( Pii );         break;
+      P[0]  = g2*creal( Pii );
+      P[1]  = g2*cimag( Pii );         break;
     case L:                         // longitudinal = temporal
-      P[0]  = creal( P00 );
-      P[1]  = cimag( P00 );         break;
+      P[0]  = g2*creal( P00 );
+      P[1]  = g2*cimag( P00 );         break;
   }
 
   return P;

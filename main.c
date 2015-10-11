@@ -9,9 +9,10 @@
 
 /*-----------------------------------------------------------------------------------------------*/
 
-double tol = 1e-1;
-size_t calls = 1e7;
-int             HTL  = 1   ;  // =1 for HTL, =2 for QED, =3 for QCD
+double    tol = 1e-1;
+size_t  calls = 1e7 ;
+int       HTL = 1   ;  // =1 for HTL, =2 for QED, =3 for QCD
+double      g = 1. ;
 
 void   eval_PI(double,double); void   eval_disp(double,double); int   points;  // See after main() ...
 
@@ -23,7 +24,7 @@ int main() {
 
   HTL = 1;    eval_PI(0.01, 2.);    eval_disp(0.001, 1.);
   HTL = 2;    eval_PI(0.01, 2.);    eval_disp(0.001, 1.);
-  HTL = 3;    eval_PI(0.01, 2.);    eval_disp(0.020, 1.);
+  HTL = 3;    eval_PI(0.01, 2.5);    eval_disp(0.05, 1.);
   /*eval_disp(0.001, 2.);*/
 
   return 0;
