@@ -1,17 +1,15 @@
 #include "core.h"
-#include <complex.h>
-#include <stdio.h>
 
 /*
  * HTL gluon self-energy
  *
  */
-double *Pi_htl(double z, pol X) {
+double *Pi_htl(double complex z, pol X) {
   /*  z := omega/q  */
-  double z2=z*z, g2=g*g;
+  double complex z2=z*z, g2=g*g;
 
   double complex 
-    LD  = clog((1.+z)/(1.-z))-I*M_PI, 
+    LD  = clog( (1.+z)/(1.-z) )-I*M_PI, 
     P00 = 1. - 0.5*z*LD,            // Pi_00 =: Pi_L
     Pii = z2 + (1.-z2)*0.5*z*LD;    // Pi_T
     Pii/= 2.; P00*=-1.;

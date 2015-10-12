@@ -52,7 +52,7 @@ double *Igd_PI_qed(double xi, void *params) {         // the integrand:
   return Pi;
 };
 
-double *Pi_qed(double o, double q, pol X) {
+double *Pi_qed(double complex o, double complex q, pol X) {
 
 
   double                        *Pi  = (double*)malloc(2*sizeof(double));
@@ -62,6 +62,7 @@ double *Pi_qed(double o, double q, pol X) {
   double res, err; struct Qpol Q = {o,q,X};
 
   /*printf("%.5f  \n", Q.o);*/
+  /*printf("%.3f  %.3f \n", o, q);*/
 
   double re_PI(double xi, void *params) { return Igd_PI_qed(xi,params)[0]; }
   double im_PI(double xi, void *params) { return Igd_PI_qed(xi,params)[1]; }
@@ -69,14 +70,17 @@ double *Pi_qed(double o, double q, pol X) {
   gsl_function  re_aux; re_aux.function=&re_PI; re_aux.params=&Q;       // nicer to package, re_aux={&...,&...}???
   gsl_function  im_aux; im_aux.function=&im_PI; im_aux.params=&Q;
 
-  double omq = fabs(o-q)/2., opq = fabs(o+q)/2.;
-  /*printf("%.3f  %.3f \n", omq, opq);*/
+  double omq = fabs(o-cabs(q))/2., opq = fabs(o+cabs(q))/2.;
+  /*printf("%.8f  %.8f \n", omq, opq);*/
   /*printf("%.3f  %.3f \n", omq/(omq+1.), opq/(opq+1.));*/
   double pts[4] = {0., omq/(omq+1.), opq/(opq+1.), 1.};
   /*double                        *pts  = (double*)malloc(4*sizeof(double));*/
   /*pts[0] = 0.; pts[1] = omq/(omq+1.); pts[2] = opq/(opq+1.); pts[3] = 1.;*/
-  gsl_integration_qagp (&re_aux,  pts, 4, 0, tol, calls, WS1, &res, &err);        Pi[0] = res;
-  gsl_integration_qagp (&im_aux,  pts, 4, 0, tol, calls, WS1, &res, &err);        Pi[1] = res;
+
+  /*if (fabs(q-o)<.1) {    Pi[0] = Pi_htl(o/q,X)[0];    Pi[1] = Pi_htl(o/q,X)[1];   return Pi;}*/
+
+  gsl_integration_qagp (&re_aux,  pts, 4, tol, tol, calls, WS1, &res, &err);        Pi[0] = res;
+  gsl_integration_qagp (&im_aux,  pts, 4, tol, tol, calls, WS1, &res, &err);        Pi[1] = res;
   /*WS = gsl_integration_workspace_alloc(calls);*/
   /*gsl_integration_qags (&re_aux,  0, 1, 0, tol, calls, WS1, &res, &err);        Pi[0] = res;*/
   /*gsl_integration_qags (&im_aux,  0, 1, 0, tol, calls, WS2, &res, &err);        Pi[1] = res;*/

@@ -63,6 +63,7 @@ double *frakJ (double k, void *params, int i) {
   for (int j=0; j<4; j++) {      sr  = (double) (2*(j%2)-1);  //  -   +   -   +   "sign of r"
                                  so  = (double) (2*(j/2)-1);  //  -   -   +   +   "sign of o"
 
+  //                    r,    k, omega,   q,``i''
       r_int = fAUX(   sr*rU,  k,  so*o,   q,  i   );      res[0] += s*r_int[0]  ;//  \__ upper
                                                           res[1] += s*r_int[1]  ;//  /
       r_int = fAUX(   sr*rL,  k,  so*o,   q,  i   );      res[0] -= s*r_int[0]  ;//  \__ lower

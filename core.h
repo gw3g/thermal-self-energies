@@ -29,15 +29,15 @@ double
 //double re_PiT(double, void *);
 //double im_PiT(double, void *);
 
-double *Pi_qed(double,double,pol);
+double *Pi_qed(double complex ,double complex ,pol);
 double *Pi_qcd(double,double,pol);
 //double reL(double,double);
 
 double *frakJ(double,void *,int);
 
 /* htl.c */
-double   *Pi_htl(double,pol);  // photon
-double  *Sig_htl(double,pol);  // quarks
+double   *Pi_htl(double complex,pol);  // photon
+double  *Sig_htl(double ,pol);  // quarks
 //double 
   //re_Pi_L( double complex, double complex),
   //im_Pi_L( double complex, double complex);
