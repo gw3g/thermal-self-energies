@@ -22,9 +22,9 @@ int main() {
 
   points = 80;
 
-  HTL = 1;    eval_PI(0.01, 2.);  eval_disp(0.0001, 1.5);
-  HTL = 2;    eval_PI(0.01, 2.);  //eval_disp(0.7, 1.5);
-  HTL = 3;    eval_PI(0.01, 2.);  //eval_disp(0.7, 1.5);
+  HTL = 1;    eval_PI(0.01, 2.);  eval_disp(0.0001, 3.5);
+  HTL = 2;    eval_PI(0.01, 2.);  eval_disp(1.1, 3.5);
+  HTL = 3;    eval_PI(0.01, 2.);  eval_disp(0.75, 3.5);
   /*eval_disp(0.001, 2.);*/
 
   return 0;
@@ -101,7 +101,7 @@ void eval_disp(double o2_min, double o2_max)
 
     fprintf(file,
           "%.5f, %.5f, %.5f\n",
-          o2, disp(o2,T), disp(o2,L)
+          o2, disp(o2,L), disp(o2,T)
       );
   }
   fclose(file);
