@@ -46,5 +46,5 @@ double disp(double,pol);
 
 /* 4-vector */
 struct pair {double complex o; double complex q;};
-struct Qpol {double  o; double q; pol X;};
+struct Qpol {double complex o; double complex q; pol X;};
 

@@ -14,24 +14,21 @@ double D_inv(double q2, void *params) {
   pol X     = Q->X;
 
   double complex o = csqrt(o2);
-  double complex q = csqrt(q2);
-  q*=-1.;
+  double complex q = csqrt(fabs(q2));
+  q*=csqrt(q2/fabs(q2));
 
   o*=g;q*=g;
 
   double g2 = g*g;   double re_Pi;
 
-    printf(" %.5f : %.5f \n", q2, re_Pi);
-    printf(" %.5f : \n",o2);
        if (HTL==1) { re_Pi = Pi_htl(o/q,X)[0]; }
   else if (HTL==2) { re_Pi = Pi_qed(o,q,X)[0]; }
   else if (HTL==3) { re_Pi = Pi_qcd(o,q,X)[0]; }
 
-    printf(" %.5f : %.5f \n", q2, re_Pi);
-    printf(" %.5f : \n",o2);
+    printf(" (%.5f, %.5f) : rePi = %.9f \n", o2, q2, re_Pi);
 
-  switch (X) {  case L:  return (  g2*(q2     ) - re_Pi  );
-                case T:  return (  g2*(o2 - q2) - re_Pi  );   }
+  switch (X) {  case L:  return (  (g2*(q2     ) - 3.*re_Pi)  );
+                case T:  return (  (g2*(o2 - q2) - 3.*re_Pi)  );   }
 }
 
 
@@ -43,15 +40,19 @@ double disp(double o2, pol X) {
 
   double q2_lo, q2_hi;
   
-  /*if (o2<.5) {*/
-  switch (X) {  case L:  q2_hi = o2-1e-1; q2_lo =  q2_hi - 2.2; 
-                case T:  q2_hi = o2+2.; q2_lo =  q2_hi - 5.3;   }
+  // root finding withing [a,b] ... need to be careful to avoid spurious regions...
+  if ( (o2<1.)&&(HTL==1) ) {
+  switch (X) {  case L:  q2_hi = -1e-3; q2_lo =  q2_hi - 3.2; 
+                case T:  q2_hi = -1e-3; q2_lo =  q2_hi - 3.2;   }
+  }
+  /*else if (o2<1.1) {*/
+  /*switch (X) {  case L:  q2_hi = 1.3; q2_lo = -.5; */
+                /*case T:  q2_hi = 1.3; q2_lo = -.5;  return 0;}*/
   /*}*/
-  /*else {*/
-
-  /*switch (X) {  case L:  q2_hi = o2-1e-7; q2_lo =  -1.1; */
-                /*case T:  q2_hi = o2-1e-7; q2_lo =  -1.1;   }*/
-  /*}*/
+  else {
+  switch (X) {  case L:  q2_hi = o2-1e-8; q2_lo =  1e-8; 
+                case T:  q2_hi = o2-1e-8; q2_lo =  1e-8;   }
+  }
 
   /*q2_lo = ( (o2>0) ? q2 : 0.) + 1e-6; q2_hi = q2_lo+1.;*/
 
@@ -72,8 +73,8 @@ double disp(double o2, pol X) {
             r = gsl_root_fsolver_root (rs);
             q2_lo = gsl_root_fsolver_x_lower (rs);
             q2_hi = gsl_root_fsolver_x_upper (rs);
-            /*printf("%d ---q: %.4f, lo: %.4f, hi: %.4f\n", HTL, o2, q2_lo, q2_hi );*/
-            if ((fabs(q2_hi)<1e-2)&&( fabs(q2_lo)<1e-2)) { q2_lo = 1e-1; q2_hi = o2 - 1e-7; }
+            printf("%d ---q: %.4f, lo: %.4f, hi: %.4f\n", HTL, o2, q2_lo, q2_hi );
+            /*if ((fabs(q2_hi)<1e-9)&&( fabs(q2_lo)<1e-9)) { q2_lo = 1e-4; q2_hi = o2 + 2.; iter = 0;}*/
         }
   while ( iter < max_iter);
 

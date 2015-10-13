@@ -10,8 +10,8 @@ double *Igd_PI_qcd(double xi, void *params) {         // the integrand:
   /* members */
   struct Qpol * Q = (struct Qpol *)params;
 
-  double o = Q->o;
-  double q = Q->q;
+  double complex o = Q->o;
+  double complex q = Q->q;
   pol    X = Q->X;
 
   /*printf("%d\n",X);*/
@@ -46,14 +46,13 @@ double *Igd_PI_qcd(double xi, void *params) {         // the integrand:
           *g*g
           ; 
 
-
   double *Pi  = (double*)malloc(2*sizeof(double));
 
   Pi[0] = creal( res );
   Pi[1] = cimag( res );
 
   /*printf("%.3f + i %.3f \n", Pi[0], Pi[1]);*/
-  /*printf("o:%.3f q:%.3f \n",o,q);*/
+  printf("o:%.3f q:%.3f \n",o,q);
   /*printf("%.3f + i %.3f \n", creal(1./(o+k+r)), cimag(1./(o+k-r) - 1./(o-k+r)) );*/
 
   return Pi;
@@ -62,6 +61,11 @@ double *Igd_PI_qcd(double xi, void *params) {         // the integrand:
 double *Pi_qcd(double o, double q, pol X) {
 
   double                        *Pi  = (double*)malloc(2*sizeof(double));
+  double q2 = q*q;
+
+  /*if ( (fabs(q)<1e-3)||(fabs(o)<1e-3) ) { // generous ``safety net''*/
+    /*Pi[0] = Pi_htl(o/q,X)[0]; Pi[1] = Pi_htl(o/q,X)[1]; return Pi;*/
+  /*}*/
   gsl_integration_workspace     *WS1 = gsl_integration_workspace_alloc(calls);
   gsl_integration_workspace     *WS2 = gsl_integration_workspace_alloc(calls);
 
@@ -81,8 +85,8 @@ double *Pi_qcd(double o, double q, pol X) {
   double pts[4] = {0., omq/(omq+1.), opq/(opq+1.), 1.};
   /*double                        *pts  = (double*)malloc(4*sizeof(double));*/
   /*pts[0] = 0.; pts[1] = omq/(omq+1.); pts[2] = opq/(opq+1.); pts[3] = 1.;*/
-  gsl_integration_qagp (&re_aux,  pts, 4, tol, 0, calls, WS1, &res, &err);        Pi[0] = res;
-  gsl_integration_qagp (&im_aux,  pts, 4, tol, 0, calls, WS1, &res, &err);        Pi[1] = res;
+  gsl_integration_qagp (&re_aux,  pts, 4, tol, 0, calls, WS1, &res, &err);        Pi[0] = res/q2;
+  gsl_integration_qagp (&im_aux,  pts, 4, tol, 0, calls, WS1, &res, &err);        Pi[1] = res/q2;
   /*WS = gsl_integration_workspace_alloc(calls);*/
   /*gsl_integration_qags (&re_aux,  0, 1, 0, tol, calls, WS1, &res, &err);        Pi[0] = res;*/
   /*gsl_integration_qags (&im_aux,  0, 1, 0, tol, calls, WS2, &res, &err);        Pi[1] = res;*/
