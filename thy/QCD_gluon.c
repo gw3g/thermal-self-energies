@@ -1,5 +1,4 @@
 #include "core.h"
-#include <gsl/gsl_math.h>
 #include <gsl/gsl_integration.h>
 size_t calls;
 double tol;
@@ -13,8 +12,6 @@ double *Igd_PI_qcd(double xi, void *params) {         // the integrand:
   double complex o = Q->o;
   double complex q = Q->q;
   pol    X = Q->X;
-
-  /*printf("%d\n",X);*/
 
   /* variable changes */
   double
@@ -40,9 +37,10 @@ double *Igd_PI_qcd(double xi, void *params) {         // the integrand:
 
   free(e_int);
 
-  res *=  -fk //(-fk/q )
-          *( 12./(8.*M_PI*M_PI) )
-          *( 1./( (1.-xi)*(1.-xi) ) ) 
+  res *=  -fk                                         // thermal weights
+          *6.*3.                                     // ??
+          *( 1./(4.*M_PI*M_PI) )                      // angular prefactors
+          *( 1./( (1.-xi)*(1.-xi) ) )                 // jacobian
           *g*g
           ; 
 
@@ -52,7 +50,7 @@ double *Igd_PI_qcd(double xi, void *params) {         // the integrand:
   Pi[1] = cimag( res );
 
   /*printf("%.3f + i %.3f \n", Pi[0], Pi[1]);*/
-  printf("o:%.3f q:%.3f \n",o,q);
+  /*printf("o:%.3f q:%.3f \n",o,q);*/
   /*printf("%.3f + i %.3f \n", creal(1./(o+k+r)), cimag(1./(o+k-r) - 1./(o-k+r)) );*/
 
   return Pi;

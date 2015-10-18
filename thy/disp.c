@@ -25,10 +25,10 @@ double D_inv(double q2, void *params) {
   else if (HTL==2) { re_Pi = Pi_qed(o,q,X)[0]; }
   else if (HTL==3) { re_Pi = Pi_qcd(o,q,X)[0]; }
 
-    printf(" (%.5f, %.5f) : rePi = %.9f \n", o2, q2, re_Pi);
+    /*printf(" (%.5f, %.5f) : rePi = %.9f \n", o2, q2, re_Pi);*/
 
-  switch (X) {  case L:  return (  (g2*(q2     ) - 3.*re_Pi)  );
-                case T:  return (  (g2*(o2 - q2) - 3.*re_Pi)  );   }
+  switch (X) {  case L:  return (  (g2*(q2     ) - re_Pi)  );
+                case T:  return (  (g2*(o2 - q2) - re_Pi)  );   }
 }
 
 
@@ -73,7 +73,7 @@ double disp(double o2, pol X) {
             r = gsl_root_fsolver_root (rs);
             q2_lo = gsl_root_fsolver_x_lower (rs);
             q2_hi = gsl_root_fsolver_x_upper (rs);
-            printf("%d ---q: %.4f, lo: %.4f, hi: %.4f\n", HTL, o2, q2_lo, q2_hi );
+            /*printf("%d ---q: %.4f, lo: %.4f, hi: %.4f\n", HTL, o2, q2_lo, q2_hi );*/
             /*if ((fabs(q2_hi)<1e-9)&&( fabs(q2_lo)<1e-9)) { q2_lo = 1e-4; q2_hi = o2 + 2.; iter = 0;}*/
         }
   while ( iter < max_iter);

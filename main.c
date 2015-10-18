@@ -26,7 +26,7 @@ void   eval_PI(double,double); void   eval_disp(double,double); int   points;  /
 
 int main() {
 
-  points = 20; g = 1.;
+  points = 100; g = .9;
 
   HTL = 1;    eval_PI(0.01, 2.);  eval_disp(0.0001, 3.5);
   HTL = 2;    eval_PI(0.01, 2.);  eval_disp(1.1, 3.5);

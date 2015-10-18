@@ -16,7 +16,6 @@ double *Igd_PI_qed(double xi, void *params) {         // the integrand:
   /* variable changes */
   double
     k   = xi/(1.-xi),
-    /*k   = xi,*/
     fk  = f(k,F);
 
   double complex res = 0.;
@@ -34,9 +33,10 @@ double *Igd_PI_qed(double xi, void *params) {         // the integrand:
 
   free(e_int);
 
-  res *=  -fk //(-fk/q )
-          *( 12./(4.*M_PI*M_PI) )
-          *( 1./( (1.-xi)*(1.-xi) ) ) 
+  res *=  -fk                                         // thermal weights
+          *12.*3.                                     // ??
+          *( 1./(4.*M_PI*M_PI) )                      // angular prefactors
+          *( 1./( (1.-xi)*(1.-xi) ) )                 // jacobian
           *g*g
           ; 
 
