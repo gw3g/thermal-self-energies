@@ -56,7 +56,7 @@ double *Igd_PI_qcd(double xi, void *params) {         // the integrand:
   return Pi;
 };
 
-double *Pi_qcd(double o, double q, pol X) {
+double *Pi_qcd(double complex o, double complex q, pol X) {
 
   double                        *Pi  = (double*)malloc(2*sizeof(double));
   double q2 = q*q;
