@@ -21,7 +21,7 @@ begin graph
   let d4 = 0               from 0 to 2.
   data "T, htl.csv" comment # d11 = c1, c2
   !data "Pi, qed.csv" comment # d12 = c1, c2
-  !data "Pi, qcd.csv" comment # d13 = c1, c2
+  data "T, qcd.csv" comment # d13 = c1, c2
 
   d4 line             color 0.5 lstyle 8 lwidth 0.06
   d12 line            color #0057AE lstyle 1 lwidth 0.12               ! blue
@@ -49,7 +49,7 @@ begin graph
   let d4 = 0               from 0 to 2.0
   data "T, htl.csv" comment # d11 = c1, c3
   !data "Pi, qed.csv" comment # d12 = c1, c3
-  !data "Pi, qcd.csv" comment # d13 = c1, c3
+  data "T, qcd.csv" comment # d13 = c1, c3
 
   d4 line             color 0.5 lstyle 8 lwidth 0.06
   d12 line            color #0057AE lstyle 1 lwidth 0.12               ! blue

@@ -28,6 +28,7 @@ double
 double *Pi_qed(double complex ,double complex ,pol);
 double *Pi_qcd(double complex ,double complex ,pol);
 double *Sig_qcd(double,double,pol);
+double  *T_qcd(double complex, double complex, pol);          // quarks
 
 double *frakJ(double,void *,int);
 

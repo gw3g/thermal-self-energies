@@ -32,6 +32,7 @@ int main() {
   points = 100; g = .9;
 
   HTL = 1;    eval_T(0.01, 2.); 
+  HTL = 2;    eval_T(0.01, 2.); 
   /*HTL = 1;    eval_PI(0.01, 2.);  eval_disp(0.0001, 3.5);*/
   /*HTL = 2;    eval_PI(0.01, 2.);  eval_disp(1.1, 3.5);*/
   /*HTL = 3;    eval_PI(0.01, 2.);  eval_disp(0.75, 3.5);*/
@@ -103,7 +104,7 @@ void eval_T(double o_min, double o_max)
     o = o_min + (o_max-o_min)*( (double) i )/( (double) points );
 
          if (HTL==1) {    piL=T_htl(o,q,L),    piT=T_htl(o,q,T);    }
-    else if (HTL==2) {    piL=T_htl(o,q,L);    piT=T_htl(o,q,T);    }
+    else if (HTL==2) {    piL=T_qcd(o,q,L);    piT=T_qcd(o,q,T);    }
 
     fprintf(file,
           "%.5f, %.5f, %.5f, %.5f, %.5f\n",
