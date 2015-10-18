@@ -9,18 +9,24 @@
 
 /*-----------------------------------------------------------------------------------------------*/
 
-double    tol = 1e-1;
-size_t  calls = 1e7 ;
-int       HTL = 1   ;  // =1 for HTL, =2 for QED, =3 for QCD
-double      g = 1. ;
+/* external parameters */     int Nf; double g, mD2;
 
-void   eval_PI(double,double); void   eval_disp(double,double); int   points;  // See after main() ...
+                              // ------------------------
+                              // (      switches:       )
+                              // ------------------------
+double          tol = 1e-1;   // tolerance
+size_t        calls = 1e7 ;   // integration calls
+int             HTL = 1   ;   // =1 for HTL, =2 for QED, =3 for QCD
+
+/*-----------------------------------------------------------------------------------------------*/
+
+void   eval_PI(double,double); void   eval_disp(double,double); int   points;  // See after main() 
 
 /*-----------------------------------------------------------------------------------------------*/
 
 int main() {
 
-  points = 20;
+  points = 20; g = 1.;
 
   HTL = 1;    eval_PI(0.01, 2.);    eval_disp(0.001, 1.);
   HTL = 2;    eval_PI(0.01, 2.);    eval_disp(0.001, 1.);

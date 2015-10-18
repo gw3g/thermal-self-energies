@@ -1,6 +1,4 @@
 #include "core.h"
-#include <complex.h>
-#include <stdio.h>
 
 /*
  * HTL gluon self-energy
@@ -14,7 +12,8 @@ double *Pi_htl(double z, pol X) {
     LD  = clog((1.+z)/(1.-z))-I*M_PI, 
     P00 = 1. - 0.5*z*LD,            // Pi_00 =: Pi_L
     Pii = z2 + (1.-z2)*0.5*z*LD;    // Pi_T
-    Pii/= 2.; P00*=-1.;
+    Pii/= 2.; P00*=-1.;             // for consistency w/ 
+    Pii*= 3.; P00*= 3.;             // Eq(5) of hep-ph/9708434
 
   double *P = (double *)malloc( 2*sizeof(double) );
 
@@ -36,12 +35,14 @@ double *Pi_htl(double z, pol X) {
  */
 double *Sig_htl(double z, pol X) {
   /*  z := omega/q  */
-  double z2=z*z;
 
   double complex 
-    LD  = clog((1.+z)/(1.-z))-I*M_PI, 
+    LD  = clog((z+1.)/(z-1.)), 
     S0  = 0.5*LD ,                  // Sigma_0
     Si  = -1. + 0.5*z*LD;           // Sigma_i   ( dir. ~ \hat{q} )
+                                    // cf Eq.(22,26) of hep-ph/9708434
+                                    // T_1 ~ S_0
+                                    // T_2 ~ S_0 - Si
 
   double *S = (double *)malloc( 2*sizeof(double) );
 

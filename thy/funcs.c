@@ -32,9 +32,9 @@ double *fAUX(double r, double k, double o, double q, int i) {
 }
 
 double *frakJ (double k, void *params, int i) {
-  /*
-   * k-integrand
-   * params = {o, q, X};
+  /*                          ---+---
+   * k-integrand                 |
+   *                          (params) = Qpol {o, q, X};
    *
    * i =    0,    1,    2,    3
    *        J00   Jii  qJij   Jij
@@ -46,13 +46,13 @@ double *frakJ (double k, void *params, int i) {
   double  q = Q->q;
   pol     X = Q->X;
 
-  double *r_int   = (double*)malloc(2*sizeof(double));    // 0-REAL, 1-IMAG
-  double *res     = (double*)malloc(2*sizeof(double));    //
+  double *r_int   = (double*)malloc(2*sizeof(double));        // 0-REAL, 1-IMAG
+  double *res     = (double*)malloc(2*sizeof(double));        //
 
   double sr, so;
   double s = 1.;
 
-  double rU = fabs(q+k), rL = fabs(q-k);
+  double rU = fabs(q+k), rL = fabs(q-k);                      // upper/lower r-limits
 
   res[0]  = 0. ; res[1] = 0.;
 
