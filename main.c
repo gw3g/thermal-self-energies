@@ -28,9 +28,9 @@ int main() {
 
   points = 20; g = 1.;
 
-  HTL = 1;    eval_PI(0.01, 2.);    eval_disp(0.001, 1.);
-  HTL = 2;    eval_PI(0.01, 2.);    eval_disp(0.001, 1.);
-  HTL = 3;    eval_PI(0.01, 2.5);    eval_disp(0.05, 1.);
+  HTL = 1;    eval_PI(0.01, 2.);  eval_disp(0.0001, 3.5);
+  HTL = 2;    eval_PI(0.01, 2.);  eval_disp(1.1, 3.5);
+  HTL = 3;    eval_PI(0.01, 2.);  eval_disp(0.75, 3.5);
   /*eval_disp(0.001, 2.);*/
 
   return 0;
@@ -78,7 +78,7 @@ void eval_PI(double o_min, double o_max)
 }
 
 
-void eval_disp(double q_min, double q_max)
+void eval_disp(double o2_min, double o2_max)
 {
 
        if (HTL==1) sprintf(fname, "out/omega(q), htl.csv"                                         );
@@ -93,13 +93,13 @@ void eval_disp(double q_min, double q_max)
 
   fprintf(file,   "# pole in propagator\n"                                                        );
   fprintf(file,   "#\n"                                                                           );
-  /*fprintf(file,   "# o/m, q^2_L(o)/m, q^2_T(o)/m\n"                                           );*/
-  fprintf(file,   "# q/m, omega_L(q)/m, omega_T(q)/m\n"                                           );
+  fprintf(file,   "# o2/m2, q^2_L(o)/m, q^2_T(o)/m\n"                                           );
+  /*fprintf(file,   "# q/m, omega_T(q)/m, omega_L(q)/m\n"                                           );*/
 
-  double q; 
+  double o2; 
 
   for(int i=0; i<points; i++) {
-    q = q_min + (q_max-q_min)*( (double) i )/( (double) points );
+    o2 = o2_min + (o2_max-o2_min)*( (double) i )/( (double) points );
 
          /*if (HTL==1) {    piL=Pi_htl(o/q,L),    piT=Pi_htl(o/q,T);    }*/
     /*else if (HTL==2) {    piL=Pi_qed(o,q,L);    piT=Pi_qed(o,q,T);    }*/
@@ -107,7 +107,7 @@ void eval_disp(double q_min, double q_max)
 
     fprintf(file,
           "%.5f, %.5f, %.5f\n",
-          q, disp(q,L), disp(q,T)
+          o2, disp(o2,L), disp(o2,T)
       );
   }
   fclose(file);

@@ -25,14 +25,14 @@ double
    f(float e, p_type X),    // f(e)       for X type
   bf(float e, p_type X);    // \bar{f}(x) for X type
 
-double *Pi_qed(double,double,pol);
+double *Pi_qed(double complex ,double complex ,pol);
 double *Pi_qcd(double,double,pol);
 
 double *frakJ(double,void *,int);
 
 /* htl.c */
-double   *Pi_htl(double,pol);  // photon
-double  *Sig_htl(double,pol);  // quarks
+double   *Pi_htl(double complex,pol);   // photon
+double  *Sig_htl(double ,pol);          // quarks
 
 /* disp rel */
 double disp(double,pol);
