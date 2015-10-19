@@ -9,23 +9,31 @@ double *fAUX(double complex r, double k, double complex o, double complex q, int
 
   double *res     = (double*)malloc(2*sizeof(double));    // 0-REAL, 1-IMAG
 
-  if (i==0) {
+  if (i==0) {         // j D
 
        D   = +  k*(    + r - ko*ll                                   )*q2;           }
 
-  else if (i==1) {
+  else if (i==1) {    // j (k.r) D
 
        D   = +.50*(    -.5*r2 + r*ko - (ko*ko + k2 - q2)*ll          )*q2;           }
 
-  else if (i==2) {
+  else if (i==2) {    // j (q.k) (q.r) D
 
        D   = -.25*(    + .25*r4 - r3*ko/3. + .5*r2*(ko*ko - 2.*k2)
                             + r*(k3 - k2*o - 3.*k*o2 - o*o2 ) 
                             + ( o2*(k+ko)*(k+ko) - q2*q2 )*ll     ) ;                }
 
-  else if (i==3) {
+  else if (i==3) {    // D
 
        D   = +   ll*q2;                                                              }
+
+  else if (i==4) {    //  j (1/k) D
+
+       D   = +   r  - ko*ll;                                                         }
+
+  else if (i==5) {    //  j (1/r) D
+
+       D   = +   k*ll;                                                               }
 
   res[0] = creal(D); res[1] = cimag(D);                                  return res;
 
@@ -72,8 +80,8 @@ double *frakJ (double k, void *params, int i) {
                                                           res[1] -= s*r_int[1]  ;//  /
                                                                                                       };
 
-                                                          res[0] *= -.5/q;
-                                                          res[1] *= -.5/q;
+                                                          res[0] *= -.5/q;       // factor q from 
+                                                          res[1] *= -.5/q;       // jacobian of r
   free(r_int);
   return res;
 }

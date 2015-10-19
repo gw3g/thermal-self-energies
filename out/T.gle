@@ -1,0 +1,129 @@
+size 26 18
+set lwidth 0.06
+set cap round
+set font psncsi
+set hei 0.6
+
+amove 2 2
+begin graph
+  size 10 7 fullsize
+
+  xlabels font psncsr hei 0.5
+  xticks length 0.25
+  ylabels font psncsr hei 0.5
+  yticks length 0.25
+
+  xaxis min -0.1 max 2.1 dticks 0.5
+  xtitle "\omega/T" hei 0.5 font psncsi dist 0.5
+  yaxis min -1.5 max 16. dticks 3
+  ytitle "Re(\setfont{psncsi}T_1\setfont{psncsr})\setfont{psncsi}T/m_f^2" hei 0.6 font psncsi dist 0.1
+
+  let d4 = 0               from 0 to 2.
+  data "T, htl.csv" comment # d11 = c1, c2
+  !data "Pi, qed.csv" comment # d12 = c1, c2
+  data "T, qcd.csv" comment # d13 = c1, c2
+
+  d4 line             color 0.5 lstyle 8 lwidth 0.06
+  d12 line            color #0057AE lstyle 1 lwidth 0.12               ! blue
+  d13 line            color #14B03D lstyle 1 lwidth 0.12               ! green for  gluons
+  d11 line            color #EB811B lstyle 4 lwidth 0.1                ! orange
+end graph
+
+set hei 0.5
+
+set font psncsr
+amove 2 9
+begin graph
+  size 10 7 fullsize
+
+  xlabels font psncsr hei 0.5
+  xticks length 0.25
+  ylabels font psncsr hei 0.5
+  yticks length 0.25
+
+  xaxis min -0.1 max 2.1 dticks 0.5
+  xnames ""
+  yaxis min -7. max 1. dticks 2 nofirst
+  ytitle "Im(\setfont{psncsi}T_1\setfont{psncsr})\setfont{psncsi}T/m_f^2" hei 0.6 font psncsi dist 0.1
+
+  let d4 = 0               from 0 to 2.0
+  data "T, htl.csv" comment # d11 = c1, c3
+  !data "Pi, qed.csv" comment # d12 = c1, c3
+  data "T, qcd.csv" comment # d13 = c1, c3
+
+  d4 line             color 0.5 lstyle 8 lwidth 0.06
+  d12 line            color #0057AE lstyle 1 lwidth 0.12               ! blue
+  d13 line            color #14B03D lstyle 1 lwidth 0.12               ! green for  gluons
+  d11 line            color #EB811B lstyle 4 lwidth 0.1                ! orange
+
+end graph
+
+amove 15 2
+begin graph
+  size 10 7 fullsize
+
+  xlabels font psncsr hei 0.5
+  xticks length 0.25
+  ylabels font psncsr hei 0.5
+  yticks length 0.25
+
+  xaxis min -0.1 max 2.1 dticks 0.5
+  xtitle "\omega/T" hei 0.5 font psncsi dist 0.5
+  yaxis min -.5 max 5.5 dticks 1
+  !ynames 1 "" "" 10 "" "" 100 
+  ytitle "Re(\setfont{psncsi}T_2\setfont{psncsr})\setfont{psncsi} /m_f^2" hei 0.6 font psncsi dist 0.1
+
+  let d4 = 0               from 0 to 2.
+  data "T, htl.csv" comment # d11 = c1, c4
+  !data "Pi, qed.csv" comment # d12 = c1, c4
+  !data "Pi, qcd.csv" comment # d13 = c1, c4
+
+  d4 line             color 0.5 lstyle 8 lwidth 0.06
+  d12 line            color #0057AE lstyle 1 lwidth 0.12               ! blue
+  d13 line            color #14B03D lstyle 1 lwidth 0.12               ! green for  gluons
+  d11 line            color #EB811B lstyle 4 lwidth 0.1                ! organge
+end graph
+set hei 0.5
+
+begin key
+  compact
+  position br
+  nobox
+  offset 0.3 0.8
+  text "HTL" line color #EB811B lstyle 4 lwidth 0.1
+  text "photon" line color #0057AE lstyle 1 lwidth 0.12
+  text "gluon" line color #14B03D lstyle 1 lwidth 0.12
+end key
+
+set hei 0.5
+
+set font psncsr
+amove 15 9
+begin graph
+  size 10 7 fullsize
+
+  xlabels font psncsr hei 0.5
+  xticks length 0.25
+  ylabels font psncsr hei 0.5
+  yticks length 0.25
+
+  xaxis min -0.1 max 2.1 dticks 0.5
+  xnames ""
+  yaxis min -1.1 max 1.1 dticks .5
+  ytitle "Im(\setfont{psncsi}T_2\setfont{psncsr})\setfont{psncsi} /m_f^2" hei 0.6 font psncsi dist 0.1
+
+  let d4 = 0               from 0 to 1.5
+
+  data "T, htl.csv" comment # d11 = c1, c5
+  !data "Pi, qed.csv" comment # d12 = c1, c5
+  !data "Pi, qcd.csv" comment # d13 = c1, c5
+
+  d4 line             color 0.5 lstyle 8 lwidth 0.06
+  d12 line            color #0057AE lstyle 1 lwidth 0.12               ! blue
+  d13 line            color #14B03D lstyle 1 lwidth 0.12               ! green for  gluons
+  d11 line            color #EB811B lstyle 4 lwidth 0.1                ! orange
+end graph
+
+!amove 10 17
+!text QED - photon self-energy
+

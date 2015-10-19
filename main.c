@@ -20,7 +20,10 @@ int             HTL = 1   ;   // =1 for HTL, =2 for QED, =3 for QCD
 
 /*-----------------------------------------------------------------------------------------------*/
 
-void   eval_PI(double,double); void   eval_disp(double,double); int   points;  // See after main() 
+void   eval_PI(double,double); 
+void   eval_T(double,double);
+void   eval_disp(double,double); 
+int   points;                               // See after main() 
 
 /*-----------------------------------------------------------------------------------------------*/
 
@@ -28,9 +31,11 @@ int main() {
 
   points = 100; g = .9;
 
-  HTL = 1;    eval_PI(0.01, 2.);  eval_disp(0.0001, 3.5);
-  HTL = 2;    eval_PI(0.01, 2.);  eval_disp(1.1, 3.5);
-  HTL = 3;    eval_PI(0.01, 2.);  eval_disp(0.75, 3.5);
+  HTL = 1;    eval_T(0.01, 2.); 
+  HTL = 2;    eval_T(0.01, 2.); 
+  /*HTL = 1;    eval_PI(0.01, 2.);  eval_disp(0.0001, 3.5);*/
+  /*HTL = 2;    eval_PI(0.01, 2.);  eval_disp(1.1, 3.5);*/
+  /*HTL = 3;    eval_PI(0.01, 2.);  eval_disp(0.75, 3.5);*/
   /*eval_disp(0.001, 2.);*/
 
   return 0;
@@ -66,6 +71,40 @@ void eval_PI(double o_min, double o_max)
          if (HTL==1) {    piL=Pi_htl(o/q,L),    piT=Pi_htl(o/q,T);    }
     else if (HTL==2) {    piL=Pi_qed(o,q,L);    piT=Pi_qed(o,q,T);    }
     else if (HTL==3) {    piL=Pi_qcd(o,q,L);    piT=Pi_qcd(o,q,T);    }
+
+    fprintf(file,
+          "%.5f, %.5f, %.5f, %.5f, %.5f\n",
+          creal( o ),
+          piL[0], piL[1], piT[0], piT[1] 
+      );
+    free(piL);free(piT);
+  }
+  fclose(file);
+}
+
+void eval_T(double o_min, double o_max)
+{
+
+       if (HTL==1) sprintf(fname, "out/T, htl.csv"                                               );
+  else if (HTL==2) sprintf(fname, "out/T, qcd.csv"                                               );
+
+  file = fopen(fname,"w+");
+
+       if (HTL==1) fprintf(file, "# HTL approx\n"                                                 );
+  else if (HTL==2) fprintf(file, "# QCD quark \n"                                                 );
+
+  fprintf(file,   "#\n"                                                                           );
+  fprintf(file,   "# o/T, Re(T_1),  Im(T_2),  Re(T_2),  Im(T_2)\n"                            );
+
+  double o;
+  double q=1.; 
+  double *piL;   double *piT;
+
+  for(int i=0; i<points; i++) {
+    o = o_min + (o_max-o_min)*( (double) i )/( (double) points );
+
+         if (HTL==1) {    piL=T_htl(o,q,L),    piT=T_htl(o,q,T);    }
+    else if (HTL==2) {    piL=T_qcd(o,q,L);    piT=T_qcd(o,q,T);    }
 
     fprintf(file,
           "%.5f, %.5f, %.5f, %.5f, %.5f\n",

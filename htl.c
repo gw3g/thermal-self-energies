@@ -33,7 +33,7 @@ double *Pi_htl(double complex z, pol X) {
  * HTL quark self-energy
  *
  */
-double *Sig_htl(double z, pol X) {
+double *Sig_htl(double complex z, pol X) {
   /*  z := omega/q  */
 
   double complex 
@@ -58,3 +58,23 @@ double *Sig_htl(double z, pol X) {
   return S;                         // return array of [ Re(Sigma), Im(Sigma) ]
 }
 
+
+double *T_htl(double complex o, double complex q, pol X) {
+  double complex z = o/q;                                     //  no factor of mf^2 
+
+  double complex                               S0 = ( Sig_htl(z,L)[0] + I*Sig_htl(z,L)[1] )/q;
+  double complex                               Si = ( Sig_htl(z,T)[0] + I*Sig_htl(z,T)[1] )/q;
+
+  double *Ti = (double *)malloc( 2*sizeof(double) );
+
+  switch(X) {
+    case L:                                     // longitudinal = T_1
+      Ti[0]  = 4.*creal( S0 );
+      Ti[1]  = 4.*cimag( S0 );                   break;
+    case T:                                     // transverse = T_2
+      Ti[0]  = 4.*creal( o*S0 - q*Si );
+      Ti[1]  = 4.*cimag( o*S0 - q*Si );          break;
+  }
+
+  return Ti;
+}
