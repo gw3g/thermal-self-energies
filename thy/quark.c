@@ -9,17 +9,20 @@ double *Igd_T_qcd(double xi, void *params) {         // the integrand:
   /* members */
   struct Qpol * Q = (struct Qpol *)params;
 
-  double complex o = Q->o;
-  double complex q = Q->q;
-  pol    X = Q->X;
+  double complex  o = Q->o;
+  double complex  q = Q->q;
+  pol             X = Q->X;
 
   /* variable changes */
   double
     k   = xi/(1.-xi),
+    fbk = f(k,B),
+    ffk = f(k,F);
+
+  double complex
     q2  = q*q,
     o2  = o*o,
-    fbk  = f(k,B),
-    ffk  = f(k,F);
+    z   = o/q;
 
   double complex res = 0.;
 
@@ -27,19 +30,21 @@ double *Igd_T_qcd(double xi, void *params) {         // the integrand:
 
   switch(X) {
     case L:
-              e_int = frakJ(k,Q,4); res += ( e_int[0] + I*e_int[1] )*ffk;
-              e_int = frakJ(k,Q,5); res -= ( e_int[0] + I*e_int[1] )*fbk;            break;
-    case T:
               e_int = frakJ(k,Q,4); res += ( e_int[0] + I*e_int[1] )*fbk;
-              e_int = frakJ(k,Q,5); res += ( e_int[0] + I*e_int[1] )*ffk;            break;
+              e_int = frakJ(k,Q,5); res -= ( e_int[0] + I*e_int[1] )*ffk;            break;
+    case T:
+              e_int = frakJ(k,Q,4); res -= ( e_int[0] + I*e_int[1] )*o*fbk;
+              e_int = frakJ(k,Q,5); res += ( e_int[0] + I*e_int[1] )*o*ffk;
+              e_int = frakJ(k,Q,6); res -= ( e_int[0] + I*e_int[1] )*fbk/q;
+              e_int = frakJ(k,Q,7); res += ( e_int[0] + I*e_int[1] )*ffk/q;         break;
   }
 
   free(e_int);
 
-  res *=  -( 8.*3. )
+  res *=  ( 8.*2. )
           *( 1./(4.*M_PI*M_PI) )                      // angular prefactors
           *( 1./( (1.-xi)*(1.-xi) ) )                 // jacobian
-          *g*g
+          /**g*g*/
           ; 
 
   double *Pi  = (double*)malloc(2*sizeof(double));
@@ -80,8 +85,8 @@ double *T_qcd(double complex o, double complex q, pol X) {
   double pts[4] = {0., omq/(omq+1.), opq/(opq+1.), 1.};
   /*double                        *pts  = (double*)malloc(4*sizeof(double));*/
   /*pts[0] = 0.; pts[1] = omq/(omq+1.); pts[2] = opq/(opq+1.); pts[3] = 1.;*/
-  gsl_integration_qagp (&re_aux,  pts, 4, tol, 0, calls, WS1, &res, &err);        Pi[0] = res;
-  gsl_integration_qagp (&im_aux,  pts, 4, tol, 0, calls, WS1, &res, &err);        Pi[1] = res;
+  gsl_integration_qagp (&re_aux,  pts, 4, tol, 0, calls, WS1, &res, &err);        Pi[0] = res*q;
+  gsl_integration_qagp (&im_aux,  pts, 4, tol, 0, calls, WS1, &res, &err);        Pi[1] = res*q;
   /*WS = gsl_integration_workspace_alloc(calls);*/
   /*gsl_integration_qags (&re_aux,  0, 1, 0, tol, calls, WS1, &res, &err);        Pi[0] = res;*/
   /*gsl_integration_qags (&im_aux,  0, 1, 0, tol, calls, WS2, &res, &err);        Pi[1] = res;*/

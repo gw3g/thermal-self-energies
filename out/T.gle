@@ -43,7 +43,7 @@ begin graph
 
   xaxis min -0.1 max 2.1 dticks 0.5
   xnames ""
-  yaxis min -7. max 1. dticks 2 nofirst
+  yaxis min -10.2 max 1. dticks 2 nofirst
   ytitle "Im(\setfont{psncsi}T_1\setfont{psncsr})\setfont{psncsi}T/m_f^2" hei 0.6 font psncsi dist 0.1
 
   let d4 = 0               from 0 to 2.0
@@ -76,7 +76,7 @@ begin graph
   let d4 = 0               from 0 to 2.
   data "T, htl.csv" comment # d11 = c1, c4
   !data "Pi, qed.csv" comment # d12 = c1, c4
-  !data "Pi, qcd.csv" comment # d13 = c1, c4
+  data "T, qcd.csv" comment # d13 = c1, c4
 
   d4 line             color 0.5 lstyle 8 lwidth 0.06
   d12 line            color #0057AE lstyle 1 lwidth 0.12               ! blue
@@ -116,7 +116,7 @@ begin graph
 
   data "T, htl.csv" comment # d11 = c1, c5
   !data "Pi, qed.csv" comment # d12 = c1, c5
-  !data "Pi, qcd.csv" comment # d13 = c1, c5
+  data "T, qcd.csv" comment # d13 = c1, c5
 
   d4 line             color 0.5 lstyle 8 lwidth 0.06
   d12 line            color #0057AE lstyle 1 lwidth 0.12               ! blue

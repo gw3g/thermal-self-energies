@@ -29,7 +29,7 @@ int   points;                               // See after main()
 
 int main() {
 
-  points = 100; g = .9;
+  points = 100; g = .1;
 
   HTL = 1;    eval_T(0.01, 2.); 
   HTL = 2;    eval_T(0.01, 2.); 
