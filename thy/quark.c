@@ -30,18 +30,18 @@ double *Igd_T_qcd(double xi, void *params) {         // the integrand:
 
   switch(X) {
     case L:
-              e_int = frakJ(k,Q,4); res += ( e_int[0] + I*e_int[1] )*fbk;
-              e_int = frakJ(k,Q,5); res -= ( e_int[0] + I*e_int[1] )*ffk;            break;
+              e_int = frakJ(k,Q,4); res -= ( e_int[0] + I*e_int[1] )*fbk;
+              e_int = frakJ(k,Q,5); res += ( e_int[0] + I*e_int[1] )*ffk;            break;
     case T:
               e_int = frakJ(k,Q,4); res -= ( e_int[0] + I*e_int[1] )*o*fbk;
               e_int = frakJ(k,Q,5); res += ( e_int[0] + I*e_int[1] )*o*ffk;
-              e_int = frakJ(k,Q,6); res -= ( e_int[0] + I*e_int[1] )*fbk/q;
-              e_int = frakJ(k,Q,7); res += ( e_int[0] + I*e_int[1] )*ffk/q;         break;
+              e_int = frakJ(k,Q,6); res += ( e_int[0] + I*e_int[1] )*ffk;
+              e_int = frakJ(k,Q,7); res -= ( e_int[0] + I*e_int[1] )*fbk;         break;
   }
 
   free(e_int);
 
-  res *=  ( 8.*2. )
+  res *=  ( 8.*4. )
           *( 1./(4.*M_PI*M_PI) )                      // angular prefactors
           *( 1./( (1.-xi)*(1.-xi) ) )                 // jacobian
           /**g*g*/
