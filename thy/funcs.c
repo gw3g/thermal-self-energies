@@ -35,6 +35,19 @@ double *fAUX(double complex r, double k, double complex o, double complex q, int
 
        D   = +   k*ll;                                                               }
 
+  else if (i==6) {    //  j ( (q.k)/kr ) D
+
+       D   = + (  r*ko + (q2-k2)*clog( cabs(r) ) - ( ko*ko + q2 -k2 )*ll
+       /*D   = + (  r*ko + (q2-k2)*clog(cabs(r)) - ( ko*ko + q2 -k2 )*ll*/
+                  )/(2.*ko);                                                       }
+
+  else if (i==7) {    //  j ( (q.r)/kr ) D
+
+       D   = + (  -.5*r2 + r*ko - ( ko*ko - q2 -k2 )*ll
+                  )/(2.*k);                                                        }
+
+
+  /*printf(" %.5f + i %.5f \n", creal(D), cimag(D) );*/
   res[0] = creal(D); res[1] = cimag(D);                                  return res;
 
 }
@@ -73,15 +86,21 @@ double *frakJ (double k, void *params, int i) {
   for (int j=0; j<4; j++) {      sr  = (double) (2*(j%2)-1);  //  -   +   -   +   "sign of r"
                                  so  = (double) (2*(j/2)-1);  //  -   -   +   +   "sign of o"
 
+  if ( (i==4)||(i==5) ) {s = so;}
+  if ( (i==7) ) {s = sr;}
+  /*if ( (i==6)||(i==7) ) {s = so;}*/
   //                    r,    k, omega,   q,``i''
       r_int = fAUX(   sr*rU,  k,  so*o,   q,  i   );      res[0] += s*r_int[0]  ;//  \__ upper
                                                           res[1] += s*r_int[1]  ;//  /
       r_int = fAUX(   sr*rL,  k,  so*o,   q,  i   );      res[0] -= s*r_int[0]  ;//  \__ lower
                                                           res[1] -= s*r_int[1]  ;//  /
+
                                                                                                       };
 
                                                           res[0] *= -.5/q;       // factor q from 
                                                           res[1] *= -.5/q;       // jacobian of r
+
+  /*printf(" %.3f : %.5f + i %.5f \n", k, res[0], res[1] );*/
   free(r_int);
   return res;
 }
