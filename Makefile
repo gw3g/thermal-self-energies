@@ -1,5 +1,5 @@
 CC	= gcc
-VPATH	=thy
+VPATH	=thy aux
 CFLAGS= -I. -lgsl -lgslcblas -lm
 DEPS	= core.h
 ODIR	= obj
@@ -9,6 +9,6 @@ OBJ 	= $(patsubst %,$(ODIR)/%,$(_OBJ))
 $(ODIR)/%.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-HTL: $(OBJ)
+tl: $(OBJ)
 	gcc -o $@ $^ $(CFLAGS)
 
