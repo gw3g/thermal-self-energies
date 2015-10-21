@@ -35,13 +35,13 @@ double *fAUX(double complex r, double k, double complex o, double complex q, int
 
        D   = +   k*ll;                                                               }
 
-  else if (i==6) {    //  j ( (q.k)/kr ) D
+  else if (i==6) {    //  j ( (q.r)/kr ) D
 
-       D   = + (  r*ko + (q2-k2)*clog( cabs(r) ) - ( ko*ko + q2 -k2 )*ll
-       /*D   = + (  r*ko + (q2-k2)*clog(cabs(r)) - ( ko*ko + q2 -k2 )*ll*/
+       /*D   = + (  r*ko +(q2-k2)*clog( cabs(r) ) - ( ko*ko + q2 -k2 )*ll*/
+       D   = + (  r*ko + (q2-k2)*clog( r*(1.+I*1e-3) ) - ( ko*ko + q2 -k2 )*ll
                   )/(2.*ko);                                                       }
 
-  else if (i==7) {    //  j ( (q.r)/kr ) D
+  else if (i==7) {    //  j ( (q.k)/kr ) D
 
        D   = + (  -.5*r2 + r*ko - ( ko*ko - q2 -k2 )*ll
                   )/(2.*k);                                                        }
@@ -86,7 +86,9 @@ double *frakJ (double k, void *params, int i) {
   for (int j=0; j<4; j++) {      sr  = (double) (2*(j%2)-1);  //  -   +   -   +   "sign of r"
                                  so  = (double) (2*(j/2)-1);  //  -   -   +   +   "sign of o"
 
-  if ( (i==4)||(i==5) ) {s = so;}
+  if ( (i==4) ) {s = so;}
+  if ( (i==5) ) {s = so*sr;}
+  /*if ( (i==6) ) {s = sr;}*/
   if ( (i==7) ) {s = sr;}
   /*if ( (i==6)||(i==7) ) {s = so;}*/
   //                    r,    k, omega,   q,``i''
