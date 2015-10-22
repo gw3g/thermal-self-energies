@@ -2,7 +2,7 @@
 
 double *fAUX(double complex r, double k, double complex o, double complex q, int i) {
 
-  double complex ll = clog(k+r+o*(1.+I*1e-6) ),  D;
+  double complex ll = clog(k+r+o+o*I*1e-9 ),  D;
   double complex r2=r*r, r3=r*r2, r4=r*r3, 
                  q2=q*q, o2=o*o, 
                  k2=k*k, k3=k*k2, ko = k+o;
@@ -37,17 +37,15 @@ double *fAUX(double complex r, double k, double complex o, double complex q, int
 
   else if (i==6) {    //  j ( (q.r)/kr ) D
 
-       /*D   = + (  r*ko +(q2-k2)*clog( cabs(r) ) - ( ko*ko + q2 -k2 )*ll*/
-       D   = + (  r*ko + (q2-k2)*clog( r*(1.+I*1e-3) ) - ( ko*ko + q2 -k2 )*ll
-                  )/(2.*ko);                                                       }
+       D   = + .5*( +.5*r2 - r*ko + ( ko*ko + q2 - k2 )*ll );                        }
 
   else if (i==7) {    //  j ( (q.k)/kr ) D
 
-       D   = + (  -.5*r2 + r*ko - ( ko*ko - q2 -k2 )*ll
-                  )/(2.*k);                                                        }
+       D   = + .5*( -.5*r2 + r*ko - ( ko*ko - q2 - k2 )*ll );                        }
 
 
   /*printf(" %.5f + i %.5f \n", creal(D), cimag(D) );*/
+  /*printf(" %.5f ; %.5f \n", k, creal(r) );*/
   res[0] = creal(D); res[1] = cimag(D);                                  return res;
 
 }
@@ -88,7 +86,7 @@ double *frakJ (double k, void *params, int i) {
 
   if ( (i==4) ) {s = so;}
   if ( (i==5) ) {s = so*sr;}
-  /*if ( (i==6) ) {s = sr;}*/
+  /*if ( (i==6)&&(creal(o)>creal(q)) ) {s =  so;}*/
   if ( (i==7) ) {s = sr;}
   /*if ( (i==6)||(i==7) ) {s = so;}*/
   //                    r,    k, omega,   q,``i''

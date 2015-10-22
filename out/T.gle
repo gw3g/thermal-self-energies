@@ -91,8 +91,8 @@ begin key
   nobox
   offset 0.3 0.8
   text "HTL" line color #EB811B lstyle 4 lwidth 0.1
-  text "photon" line color #0057AE lstyle 1 lwidth 0.12
-  text "gluon" line color #14B03D lstyle 1 lwidth 0.12
+  /*text "photon" line color #0057AE lstyle 1 lwidth 0.12*/
+  text "quark" line color #14B03D lstyle 1 lwidth 0.12
 end key
 
 set hei 0.5

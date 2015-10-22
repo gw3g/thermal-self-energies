@@ -33,10 +33,10 @@ double *Igd_T_qcd(double xi, void *params) {         // the integrand:
               e_int = frakJ(k,Q,4); res -= ( e_int[0] + I*e_int[1] )*fbk;
               e_int = frakJ(k,Q,5); res -= ( e_int[0] + I*e_int[1] )*ffk;            break;
     case T:
-              e_int = frakJ(k,Q,4); res -= ( e_int[0] + I*e_int[1] )*o*fbk;
-              e_int = frakJ(k,Q,5); res -= ( e_int[0] + I*e_int[1] )*o*ffk;
-              e_int = frakJ(k,Q,6); res -= ( e_int[0] + I*e_int[1] )*fbk/q;
-              e_int = frakJ(k,Q,7); res += ( e_int[0] + I*e_int[1] )*ffk/q;         break;
+              e_int = frakJ(k,Q,4); res -= ( e_int[0] + I*e_int[1] )*fbk*o;
+              e_int = frakJ(k,Q,5); res -= ( e_int[0] + I*e_int[1] )*ffk*o;
+              e_int = frakJ(k,Q,6); res -= ( e_int[0] + I*e_int[1] )*fbk;
+              e_int = frakJ(k,Q,7); res -= ( e_int[0] + I*e_int[1] )*ffk;            break;
   }
 
   free(e_int);
@@ -69,7 +69,10 @@ double *T_qcd(double complex o, double complex q, pol X) {
                                 omq  = fabs(o-q)/2., 
                                 opq  = fabs(o+q)/2.;
 
-  double                      pts[4] = {0., omq/(omq+1.), opq/(opq+1.), 1.};
+  /*double                      pts[4] = {0., omq/(omq+1.), opq/(opq+1.), 1.};*/
+  double                    pts[4] = {0., omq/(omq+1.), opq/(opq+1.), 1.};
+
+  /*printf( " %.5f ; %.5f ; %.5f ", pts[1], pts[2], pts[3] );*/
 
   for (int i=0;i<2;i++) {
 
@@ -77,7 +80,7 @@ double *T_qcd(double complex o, double complex q, pol X) {
 
     gsl_function    aux         = { &PI, &Q };
 
-    gsl_integration_qagp (&aux,  pts, 4, tol, 0, calls, WS, &res, &err);        Pi[i] = res*q;
+    gsl_integration_qagp (&aux,  pts, 4, tol, tol, calls, WS, &res, &err);        Pi[i] = res*q;
 
   }
 
