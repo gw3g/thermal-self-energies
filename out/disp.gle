@@ -20,7 +20,7 @@ begin graph
   ytitle "\omega^2/\omega_{\setfont{psncsr}pl.}\setfont{psncsi}^2" hei 0.5 font psncsi dist 0.1
 
   let d4 = x               from .0 to 3.5
-  let d9 =x+1.5              from .3 to 1.9
+  let d9 =x+1.5              from .0 to 1.9
   let d5 =1              from -3. to 3.5
   let d6 =0              from -3. to 3.5
 
