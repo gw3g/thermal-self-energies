@@ -27,8 +27,8 @@ double D_inv(double q2, void *params) {
 
     /*printf(" (%.5f, %.5f) : rePi = %.9f \n", o2, q2, re_Pi);*/
 
-  switch (X) {  case L:  return (  (g2*(q2     ) - re_Pi)  );
-                case T:  return (  (g2*(o2 - q2) - re_Pi)  );   }
+  switch (X) {  case L:  return (  cabs(q)*(g2*(q2     ) - re_Pi)  );
+                case T:  return (  cabs(q)*(g2*(o2 - q2) - re_Pi)  );   }
 }
 
 
@@ -45,10 +45,12 @@ double disp(double o2, pol X) {
   switch (X) {  case L:  q2_hi = -1e-3; q2_lo =  q2_hi - 3.2; 
                 case T:  q2_hi = -1e-3; q2_lo =  q2_hi - 3.2;   }
   }
-  /*else if (o2<1.1) {*/
-  /*switch (X) {  case L:  q2_hi = 1.3; q2_lo = -.5; */
-                /*case T:  q2_hi = 1.3; q2_lo = -.5;  return 0;}*/
-  /*}*/
+  else if (o2<1.1) {
+  switch (X) {  case L:  q2_hi = +1.; q2_lo = -4.5; 
+                case T:  q2_hi = +1.; q2_lo = -4.5; }
+  /*switch (X) {  case L:  q2_hi = -.001; q2_lo = -4.5; */
+                /*case T:  q2_hi = -.001; q2_lo = -4.5; }*/
+  }
   else {
   switch (X) {  case L:  q2_hi = o2-1e-8; q2_lo =  1e-8; 
                 case T:  q2_hi = o2-1e-8; q2_lo =  1e-8;   }

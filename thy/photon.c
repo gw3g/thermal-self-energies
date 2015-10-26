@@ -11,7 +11,7 @@ double *Igd_PI_qed(double xi, void *params) {         // the integrand:
 
   double complex o = Q->o;
   double complex q = Q->q;
-  pol    X = Q->X;
+  pol            X = Q->X;
 
   /* variable changes */
   double
@@ -59,22 +59,26 @@ double *Pi_qed(double complex o, double complex q, pol X) {
   gsl_integration_workspace     *WS  = gsl_integration_workspace_alloc(calls);
 
   struct Qpol                     Q  = {o,q,X};
-  double complex                 q2  = q*q;
+  double complex                 q2  = q*q, D;
   double                                                                            res, err, 
-                                omq  = fabs(o-q)/2., 
-                                opq  = fabs(o+q)/2.;
+                                omq  = cabs(o-q)/2., 
+                                opq  = cabs(o+q)/2.;
 
   double                      pts[4] = {0., omq/(omq+1.), opq/(opq+1.), 1.};
 
   for (int i=0;i<2;i++) {
 
-    double          PI(double xi, void *params) { return Igd_PI_qed(xi,params)[i]; };
+    double                      PI(double xi, void *params) { return Igd_PI_qed(xi,params)[i]; };
 
-    gsl_function    aux         = { &PI, &Q };
+                                                       gsl_function    aux         = { &PI, &Q };
 
-    gsl_integration_qagp (&aux,  pts, 4, tol, 0, calls, WS, &res, &err);        Pi[i] = res/q2;
+    if ( creal(q2)<0 ) { gsl_integration_qags (&aux,  0,    1, tol, 0, calls, WS, &res, &err); }
+    else               { gsl_integration_qagp (&aux,  pts,  4, tol, 0, calls, WS, &res, &err); }
 
+                                                                                  Pi[i] = res;
   }
+
+  D = Pi[0] + I*Pi[1]; D /= q2; Pi[0] = creal(D); Pi[1] = cimag(D);
 
   gsl_integration_workspace_free (WS);
 

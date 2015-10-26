@@ -90,15 +90,17 @@ double *frakJ (double k, void *params, int i) {
   if ( (i==7) ) {s = sr;}
   /*if ( (i==6)||(i==7) ) {s = so;}*/
   //                    r,    k, omega,   q,``i''
-      r_int = fAUX(   sr*rU,  k,  so*o,   q,  i   );      res[0] += s*r_int[0]  ;//  \__ upper
-                                                          res[1] += s*r_int[1]  ;//  /
-      r_int = fAUX(   sr*rL,  k,  so*o,   q,  i   );      res[0] -= s*r_int[0]  ;//  \__ lower
-                                                          res[1] -= s*r_int[1]  ;//  /
+      r_int = fAUX(   sr*rU,  k,  so*o,   q,  i   );      res[0] += s*r_int[0]  ;//     \__ upper
+                                                          res[1] += s*r_int[1]  ;//     /
+      r_int = fAUX(   sr*rL,  k,  so*o,   q,  i   );      res[0] -= s*r_int[0]  ;//     \__ lower
+                                                          res[1] -= s*r_int[1]  ;//     /
 
-                                                                                                      };
-
-                                                          res[0] *= -.5/q;       // factor q from 
-                                                          res[1] *= -.5/q;       // jacobian of r
+  };                                            double complex D; 
+                                                               D  = res[0] + I*res[1] ; 
+                                                               D *= -.5/q             ;
+                                      // (jacobian)
+                                                          res[0]  = creal(D)    ; 
+                                                          res[1]  = cimag(D)    ;
 
   /*printf(" %.3f : %.5f + i %.5f \n", k, res[0], res[1] );*/
   free(r_int);
