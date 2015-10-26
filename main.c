@@ -31,10 +31,10 @@ int main() {
 
   points = 100; g = 1.;
 
-  HTL = 1;    eval_T(0.01, 2.); 
-  HTL = 2;    eval_T(0.01, 2.); 
+  /*HTL = 1;    eval_T(0.01, 2.); */
+  /*HTL = 2;    eval_T(0.01, 2.); */
   /*HTL = 1;    eval_PI(0.01, 2.);  eval_disp(0.0001, 3.5);*/
-  /*HTL = 2;    eval_PI(0.01, 2.);  eval_disp(1.1, 3.5);*/
+  HTL = 2;    eval_PI(0.01, 2.);  eval_disp(1.1, 3.5);
   /*HTL = 3;    eval_PI(0.01, 2.);  eval_disp(0.75, 3.5);*/
   /*eval_disp(0.001, 2.);*/
 
