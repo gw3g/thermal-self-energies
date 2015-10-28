@@ -65,6 +65,7 @@ double *Pi_qed(double complex o, double complex q, pol X) {
                                 opq  = cabs(o+q)/2.;
 
   double                      pts[4] = {0., omq/(omq+1.), opq/(opq+1.), 1.};
+  /*printf("%.7f  ::  %.7f , %.7f \n", creal(q2), pts[1], pts[2]);*/
 
   for (int i=0;i<2;i++) {
 
@@ -72,8 +73,8 @@ double *Pi_qed(double complex o, double complex q, pol X) {
 
                                                        gsl_function    aux         = { &PI, &Q };
 
-    if ( creal(q2)<0 ) { gsl_integration_qags (&aux,  0,    1, tol, 0, calls, WS, &res, &err); }
-    else               { gsl_integration_qagp (&aux,  pts,  4, tol, 0, calls, WS, &res, &err); }
+    if      (creal(q2) < 0) { gsl_integration_qags (&aux,  0,    1, tol, 0, calls, WS, &res, &err); }
+    else if (creal(q2) > 0) { gsl_integration_qagp (&aux,  pts,  4, tol, 0, calls, WS, &res, &err); }
 
                                                                                   Pi[i] = res;
   }
