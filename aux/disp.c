@@ -16,6 +16,7 @@ double D_inv(double q2, void *params) {
   double complex o = csqrt(o2);
   double complex q = csqrt(fabs(q2));
   q*=csqrt(q2/fabs(q2));
+  if (q2<0) {q*=-1.;}
 
   o*=g;q*=g;
 
@@ -45,9 +46,9 @@ double disp(double o2, pol X) {
   switch (X) {  case L:  q2_hi = -1e-3; q2_lo =  q2_hi - 3.2; 
                 case T:  q2_hi = -1e-3; q2_lo =  q2_hi - 3.2;   }
   }
-  else if (o2<1.1) {
-  switch (X) {  case L:  q2_hi = +1.; q2_lo = -4.5; 
-                case T:  q2_hi = +1.; q2_lo = -4.5; }
+  else if (o2<2.1) {
+  switch (X) {  case L:  q2_hi = +3.; q2_lo = -4.5; 
+                case T:  q2_hi = +3.; q2_lo = -4.5; }
   /*switch (X) {  case L:  q2_hi = -.001; q2_lo = -4.5; */
                 /*case T:  q2_hi = -.001; q2_lo = -4.5; }*/
   }
